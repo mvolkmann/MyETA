@@ -15,9 +15,30 @@ class ViewModel: ObservableObject {
         )
     ]
 
-    @Published var places: [Place] = []
+    @Published var places: [Place] = [
+        Place(
+            name: "Amanda's House",
+            street: "5250 Murdock",
+            city: "St. Louis",
+            state: "MO",
+            country: "USA",
+            postalCode: "63109"
+        ),
+        Place(
+            name: "Home",
+            street: "644 Glen Summit",
+            city: "St. Charles",
+            state: "MO",
+            country: "USA",
+            postalCode: "63304"
+        )
+    ]
 
     func addPerson(_ person: Person) {
         people.append(person)
+    }
+
+    func addPlace(_ place: Place) {
+        places.append(place)
     }
 }

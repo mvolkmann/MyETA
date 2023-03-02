@@ -22,6 +22,7 @@
 		1A71955E29B1532700B19F88 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955D29B1532700B19F88 /* Place.swift */; };
 		1A71956129B1569C00B19F88 /* AddPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956029B1569C00B19F88 /* AddPerson.swift */; };
 		1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956229B157AD00B19F88 /* ViewModel.swift */; };
+		1A71956529B1607500B19F88 /* AddPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956429B1607500B19F88 /* AddPlace.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		1A71955F29B155AE00B19F88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1A71956029B1569C00B19F88 /* AddPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerson.swift; sourceTree = "<group>"; };
 		1A71956229B157AD00B19F88 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		1A71956429B1607500B19F88 /* AddPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlace.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				1A71953D29B1004B00B19F88 /* ContentView.swift */,
 				1A71955629B1515F00B19F88 /* Info.swift */,
 				1A71956029B1569C00B19F88 /* AddPerson.swift */,
+				1A71956429B1607500B19F88 /* AddPlace.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */,
 				1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */,
 				1A71953C29B1004B00B19F88 /* MyETAApp.swift in Sources */,
+				1A71956529B1607500B19F88 /* AddPlace.swift in Sources */,
 				1A71955E29B1532700B19F88 /* Place.swift in Sources */,
 				1A71954D29B14FE800B19F88 /* PeopleScreen.swift in Sources */,
 			);

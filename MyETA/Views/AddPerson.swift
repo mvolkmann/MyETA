@@ -26,7 +26,6 @@ struct AddPerson: View {
     }
 
     var body: some View {
-        // TODO: Fix focus handling to move from field to field on return.
         VStack {
             LabeledContent("First Name") {
                 TextField("first name", text: $firstName, onCommit: nextFocus)

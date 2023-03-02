@@ -1,22 +1,12 @@
 import SwiftUI
 
-struct PersonRow: View {
-    var person: Person
-
-    var body: some View {
-        Text("\(person.firstName) \(person.lastName)")
-    }
-}
-
 struct PeopleScreen: View {
     @EnvironmentObject private var vm: ViewModel
 
     @State private var isAdding = false
 
-    private var isFocused: FocusState<Bool>.Binding
-
-    init(isFocused: FocusState<Bool>.Binding) {
-        self.isFocused = isFocused
+    private func personRow(_ person: Person) -> some View {
+        Text("\(person.firstName) \(person.lastName)")
     }
 
     var body: some View {
@@ -25,7 +15,6 @@ struct PeopleScreen: View {
                 Text("People").font(.largeTitle)
                 Button(action: { isAdding = true }) {
                     Image(systemName: "plus.circle.fill")
-                        // .imageScale(.large)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25)
@@ -33,7 +22,7 @@ struct PeopleScreen: View {
             }
 
             List($vm.people, editActions: .all) { $person in
-                PersonRow(person: person)
+                personRow(person)
             }
             .listStyle(.grouped)
         }

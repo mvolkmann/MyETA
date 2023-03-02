@@ -12,8 +12,6 @@ private class MessageComposerDelegate: NSObject,
 }
 
 struct ContentView: View {
-    @FocusState private var isFocused: Bool
-
     @State private var appInfo: AppInfo?
     @State private var isInfoPresented = false
     @State private var selection = "Workout"
@@ -49,12 +47,12 @@ struct ContentView: View {
 
         NavigationStack {
             TabView(selection: $selection) {
-                PeopleScreen(isFocused: $isFocused)
+                PeopleScreen()
                     .tabItem {
                         Label("People", systemImage: "person.3")
                     }
                     .tag("People")
-                PlacesScreen(isFocused: $isFocused)
+                PlacesScreen()
                     .tabItem {
                         Label(
                             "Places",
@@ -62,7 +60,7 @@ struct ContentView: View {
                         )
                     }
                     .tag("Places")
-                SendScreen(isFocused: $isFocused)
+                SendScreen()
                     .tabItem {
                         Label(
                             "Send ETA",
@@ -84,15 +82,17 @@ struct ContentView: View {
                 }
             }
 
-            .toolbar {
-                ToolbarItem(placement: .keyboard) {
-                    Button {
-                        isFocused = false
-                    } label: {
-                        Image(systemName: "keyboard.chevron.compact.down")
-                    }
-                }
-            }
+            /* Do you need a way to dismiss the on-screen keyboard?
+             .toolbar {
+                 ToolbarItem(placement: .keyboard) {
+                     Button {
+                         isFocused = false
+                     } label: {
+                         Image(systemName: "keyboard.chevron.compact.down")
+                     }
+                 }
+             }
+              */
         }
 
         .sheet(isPresented: $isInfoPresented) {
