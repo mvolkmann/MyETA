@@ -11,6 +11,17 @@
 		1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71953D29B1004B00B19F88 /* ContentView.swift */; };
 		1A71954029B1004C00B19F88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A71953F29B1004C00B19F88 /* Assets.xcassets */; };
 		1A71954329B1004C00B19F88 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A71954229B1004C00B19F88 /* Preview Assets.xcassets */; };
+		1A71954D29B14FE800B19F88 /* PeopleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71954C29B14FE800B19F88 /* PeopleScreen.swift */; };
+		1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71954E29B1500900B19F88 /* PlacesScreen.swift */; };
+		1A71955129B1502300B19F88 /* SendScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955029B1502300B19F88 /* SendScreen.swift */; };
+		1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955229B150ED00B19F88 /* AppInfo.swift */; };
+		1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955429B1512C00B19F88 /* StringExtension.swift */; };
+		1A71955729B1515F00B19F88 /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955629B1515F00B19F88 /* Info.swift */; };
+		1A71955929B1518A00B19F88 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955829B1518A00B19F88 /* Log.swift */; };
+		1A71955C29B152FA00B19F88 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955B29B152FA00B19F88 /* Person.swift */; };
+		1A71955E29B1532700B19F88 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955D29B1532700B19F88 /* Place.swift */; };
+		1A71956129B1569C00B19F88 /* AddPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956029B1569C00B19F88 /* AddPerson.swift */; };
+		1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956229B157AD00B19F88 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +30,18 @@
 		1A71953D29B1004B00B19F88 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1A71953F29B1004C00B19F88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A71954229B1004C00B19F88 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1A71954C29B14FE800B19F88 /* PeopleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleScreen.swift; sourceTree = "<group>"; };
+		1A71954E29B1500900B19F88 /* PlacesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesScreen.swift; sourceTree = "<group>"; };
+		1A71955029B1502300B19F88 /* SendScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendScreen.swift; sourceTree = "<group>"; };
+		1A71955229B150ED00B19F88 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		1A71955429B1512C00B19F88 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		1A71955629B1515F00B19F88 /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
+		1A71955829B1518A00B19F88 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		1A71955B29B152FA00B19F88 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		1A71955D29B1532700B19F88 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		1A71955F29B155AE00B19F88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1A71956029B1569C00B19F88 /* AddPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerson.swift; sourceTree = "<group>"; };
+		1A71956229B157AD00B19F88 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,9 +74,16 @@
 		1A71953A29B1004B00B19F88 /* MyETA */ = {
 			isa = PBXGroup;
 			children = (
+				1A71955F29B155AE00B19F88 /* Info.plist */,
 				1A71953B29B1004B00B19F88 /* MyETAApp.swift */,
-				1A71953D29B1004B00B19F88 /* ContentView.swift */,
+				1A71955229B150ED00B19F88 /* AppInfo.swift */,
+				1A71955829B1518A00B19F88 /* Log.swift */,
+				1A71956229B157AD00B19F88 /* ViewModel.swift */,
 				1A71953F29B1004C00B19F88 /* Assets.xcassets */,
+				1A71954B29B14FCE00B19F88 /* Extensions */,
+				1A71955A29B152EA00B19F88 /* Models */,
+				1A71954929B14FBF00B19F88 /* Screens */,
+				1A71954A29B14FC600B19F88 /* Views */,
 				1A71954129B1004C00B19F88 /* Preview Content */,
 			);
 			path = MyETA;
@@ -65,6 +95,43 @@
 				1A71954229B1004C00B19F88 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1A71954929B14FBF00B19F88 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				1A71954C29B14FE800B19F88 /* PeopleScreen.swift */,
+				1A71954E29B1500900B19F88 /* PlacesScreen.swift */,
+				1A71955029B1502300B19F88 /* SendScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		1A71954A29B14FC600B19F88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1A71953D29B1004B00B19F88 /* ContentView.swift */,
+				1A71955629B1515F00B19F88 /* Info.swift */,
+				1A71956029B1569C00B19F88 /* AddPerson.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1A71954B29B14FCE00B19F88 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1A71955429B1512C00B19F88 /* StringExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1A71955A29B152EA00B19F88 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A71955B29B152FA00B19F88 /* Person.swift */,
+				1A71955D29B1532700B19F88 /* Place.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +204,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A71955C29B152FA00B19F88 /* Person.swift in Sources */,
+				1A71955129B1502300B19F88 /* SendScreen.swift in Sources */,
+				1A71956129B1569C00B19F88 /* AddPerson.swift in Sources */,
+				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
+				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
+				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
+				1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */,
 				1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */,
+				1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */,
+				1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */,
 				1A71953C29B1004B00B19F88 /* MyETAApp.swift in Sources */,
+				1A71955E29B1532700B19F88 /* Place.swift in Sources */,
+				1A71954D29B14FE800B19F88 /* PeopleScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +348,7 @@
 				DEVELOPMENT_TEAM = 4BG3523GAZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = MyETA/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -299,7 +377,7 @@
 				DEVELOPMENT_TEAM = 4BG3523GAZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = MyETA/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
