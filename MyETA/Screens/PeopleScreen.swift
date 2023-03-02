@@ -28,19 +28,19 @@ struct PeopleScreen: View {
                         // .imageScale(.large)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 30)
+                        .frame(width: 25)
                 }
             }
 
-            List($vm.people) { $person in
+            List($vm.people, editActions: .all) { $person in
                 PersonRow(person: person)
             }
-            .border(.red)
+            .listStyle(.grouped)
         }
+        .padding()
         .sheet(isPresented: $isAdding) {
             AddPerson()
                 .presentationDragIndicator(.visible)
-                // .presentationDetents([.medium])
                 .presentationDetents([.large])
         }
     }

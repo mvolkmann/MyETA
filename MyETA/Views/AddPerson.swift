@@ -44,16 +44,21 @@ struct AddPerson: View {
                     .focused($focus, equals: \Self.cellNumber)
             }
 
-            Button("Add Person") {
-                vm.addPerson(Person(
-                    firstName: firstName,
-                    lastName: lastName,
-                    cellNumber: cellNumber
-                ))
-                dismiss()
+            HStack {
+                Button("Add Person") {
+                    vm.addPerson(Person(
+                        firstName: firstName,
+                        lastName: lastName,
+                        cellNumber: cellNumber
+                    ))
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!canAdd)
+
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(!canAdd)
         }
         .textFieldStyle(.roundedBorder)
         .padding()
