@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AddPerson: View {
+struct PersonForm: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var vm: ViewModel
 
@@ -9,6 +9,9 @@ struct AddPerson: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var cellNumber = ""
+
+    var person: Binding<Person>
+    let isAdding: Binding<Bool>
 
     private let textFieldWidth: CGFloat = 250
 
@@ -19,7 +22,7 @@ struct AddPerson: View {
     private func labeledTextField(
         label: String,
         text: Binding<String>,
-        focusedPath: KeyPath<AddPerson, String>
+        focusedPath: KeyPath<PersonForm, String>
     ) -> some View {
         LabeledContent(label) {
             TextField("", text: text, onCommit: nextFocus)
@@ -56,7 +59,8 @@ struct AddPerson: View {
             )
 
             HStack {
-                Button("Add Person") {
+                let word = isAdding.wrappedValue ? "Add" : "Update"
+                Button("\(word) Person") {
                     vm.addPerson(Person(
                         firstName: firstName,
                         lastName: lastName,
@@ -74,6 +78,11 @@ struct AddPerson: View {
         .textFieldStyle(.roundedBorder)
         .padding()
         .onAppear {
+            print("\(#fileID) \(#function) person =", person)
+            firstName = person.wrappedValue.firstName
+            lastName = person.wrappedValue.lastName
+            cellNumber = person.wrappedValue.cellNumber
+
             focus = \Self.firstName // initial focus
         }
     }

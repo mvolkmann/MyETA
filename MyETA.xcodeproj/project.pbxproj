@@ -20,7 +20,7 @@
 		1A71955929B1518A00B19F88 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955829B1518A00B19F88 /* Log.swift */; };
 		1A71955C29B152FA00B19F88 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955B29B152FA00B19F88 /* Person.swift */; };
 		1A71955E29B1532700B19F88 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71955D29B1532700B19F88 /* Place.swift */; };
-		1A71956129B1569C00B19F88 /* AddPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956029B1569C00B19F88 /* AddPerson.swift */; };
+		1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956029B1569C00B19F88 /* PersonForm.swift */; };
 		1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956229B157AD00B19F88 /* ViewModel.swift */; };
 		1A71956529B1607500B19F88 /* AddPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956429B1607500B19F88 /* AddPlace.swift */; };
 /* End PBXBuildFile section */
@@ -41,7 +41,7 @@
 		1A71955B29B152FA00B19F88 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		1A71955D29B1532700B19F88 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		1A71955F29B155AE00B19F88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		1A71956029B1569C00B19F88 /* AddPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerson.swift; sourceTree = "<group>"; };
+		1A71956029B1569C00B19F88 /* PersonForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonForm.swift; sourceTree = "<group>"; };
 		1A71956229B157AD00B19F88 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		1A71956429B1607500B19F88 /* AddPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlace.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,7 +114,7 @@
 			children = (
 				1A71953D29B1004B00B19F88 /* ContentView.swift */,
 				1A71955629B1515F00B19F88 /* Info.swift */,
-				1A71956029B1569C00B19F88 /* AddPerson.swift */,
+				1A71956029B1569C00B19F88 /* PersonForm.swift */,
 				1A71956429B1607500B19F88 /* AddPlace.swift */,
 			);
 			path = Views;
@@ -209,7 +209,7 @@
 			files = (
 				1A71955C29B152FA00B19F88 /* Person.swift in Sources */,
 				1A71955129B1502300B19F88 /* SendScreen.swift in Sources */,
-				1A71956129B1569C00B19F88 /* AddPerson.swift in Sources */,
+				1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */,
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,

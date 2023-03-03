@@ -1,4 +1,4 @@
-struct Person: Identifiable {
+struct Person: Hashable, Identifiable {
     let firstName: String
     let lastName: String
     let cellNumber: String

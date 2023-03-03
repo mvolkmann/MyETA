@@ -1,4 +1,4 @@
-struct Place: Identifiable {
+struct Place: Hashable, Identifiable {
     let name: String
     let street: String
     let city: String

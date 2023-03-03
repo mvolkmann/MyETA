@@ -1,37 +1,9 @@
-import MessageUI
 import SwiftUI
-
-private class MessageComposerDelegate: NSObject,
-    MFMessageComposeViewControllerDelegate {
-    func messageComposeViewController(
-        _ controller: MFMessageComposeViewController,
-        didFinishWith result: MessageComposeResult
-    ) {
-        controller.dismiss(animated: true)
-    }
-}
 
 struct ContentView: View {
     @State private var appInfo: AppInfo?
     @State private var isInfoPresented = false
     @State private var selection = "Workout"
-
-    private let messageComposeDelegate = MessageComposerDelegate()
-
-    private func presentMessageCompose() {
-        guard MFMessageComposeViewController.canSendText() else { return }
-
-        let scenes = UIApplication.shared.connectedScenes
-        let windowScene = scenes.first as? UIWindowScene
-        if let vc = windowScene?.windows.first?.rootViewController {
-            let composeVC = MFMessageComposeViewController()
-            composeVC.messageComposeDelegate = messageComposeDelegate
-            composeVC.subject = "My ETA" // used?
-            composeVC.recipients = ["314-398-6256"]
-            composeVC.body = "I will arrive close to 5:30 PM."
-            vc.present(composeVC, animated: true)
-        }
-    }
 
     var body: some View {
         /*
@@ -47,6 +19,14 @@ struct ContentView: View {
 
         NavigationStack {
             TabView(selection: $selection) {
+                SendScreen()
+                    .tabItem {
+                        Label(
+                            "Send ETA",
+                            systemImage: "gear"
+                        )
+                    }
+                    .tag("Send")
                 PeopleScreen()
                     .tabItem {
                         Label("People", systemImage: "person.3")
@@ -60,14 +40,6 @@ struct ContentView: View {
                         )
                     }
                     .tag("Places")
-                SendScreen()
-                    .tabItem {
-                        Label(
-                            "Send ETA",
-                            systemImage: "gear"
-                        )
-                    }
-                    .tag("Send")
             }
 
             .navigationTitle(selection)
