@@ -12,13 +12,8 @@ struct PersonForm: View {
     @State private var lastName = ""
 
     @Binding var person: Person
-    @Binding var isAdding: Bool
 
     private let textFieldWidth: CGFloat = 250
-
-    private var canAdd: Bool {
-        !firstName.isEmpty && !lastName.isEmpty && cellNumber.count >= 10
-    }
 
     private func labeledTextField(
         label: String,
@@ -42,6 +37,10 @@ struct PersonForm: View {
         }
     }
 
+    private var valid: Bool {
+        !firstName.isEmpty && !lastName.isEmpty && cellNumber.count >= 10
+    }
+
     var body: some View {
         VStack {
             labeledTextField(
@@ -61,22 +60,22 @@ struct PersonForm: View {
             )
 
             HStack {
-                let word = isAdding ? "Add" : "Update"
+                let word = index == nil ? "Add" : "Update"
                 Button("\(word) Person") {
                     let person = Person(
                         firstName: firstName,
                         lastName: lastName,
                         cellNumber: cellNumber
                     )
-                    if isAdding {
-                        vm.people.append(person)
-                    } else if let index {
+                    if let index {
                         vm.people[index] = person
+                    } else {
+                        vm.people.append(person)
                     }
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(!canAdd)
+                .disabled(!valid)
 
                 Button("Cancel") { dismiss() }
                     .buttonStyle(.bordered)

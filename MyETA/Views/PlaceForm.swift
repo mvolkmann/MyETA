@@ -15,14 +15,8 @@ struct PlaceForm: View {
     @State private var street = ""
 
     @Binding var place: Place
-    @Binding var isAdding: Bool
 
     private let textFieldWidth: CGFloat = 250
-
-    private var canAdd: Bool {
-        !name.isEmpty && !city.isEmpty && !state.isEmpty && postalCode
-            .count >= 5
-    }
 
     private func labeledTextField(
         label: String,
@@ -47,6 +41,11 @@ struct PlaceForm: View {
         case \Self.postalCode: focus = \Self.name
         default: break
         }
+    }
+
+    private var valid: Bool {
+        !name.isEmpty && !city.isEmpty && !state.isEmpty && postalCode
+            .count >= 5
     }
 
     var body: some View {
@@ -83,7 +82,7 @@ struct PlaceForm: View {
             )
 
             HStack {
-                let word = isAdding ? "Add" : "Update"
+                let word = index == nil ? "Add" : "Update"
                 Button("\(word) Place") {
                     let place = Place(
                         name: name,
@@ -93,15 +92,15 @@ struct PlaceForm: View {
                         country: country.isEmpty ? "USA" : country,
                         postalCode: postalCode
                     )
-                    if isAdding {
-                        vm.places.append(place)
-                    } else if let index {
+                    if let index {
                         vm.places[index] = place
+                    } else {
+                        vm.places.append(place)
                     }
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(!canAdd)
+                .disabled(!valid)
 
                 Button("Cancel") { dismiss() }
                     .buttonStyle(.bordered)

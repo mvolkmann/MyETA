@@ -11,7 +11,6 @@ private struct PersonRow: View {
 struct PlacesScreen: View {
     @EnvironmentObject private var vm: ViewModel
 
-    @State private var isAdding = false
     @State private var isShowingForm = false
     @State private var place = Place(
         name: "",
@@ -26,7 +25,6 @@ struct PlacesScreen: View {
         Text("\(place.name), \(place.street), \(place.city)")
             .onTapGesture {
                 self.place = place
-                isAdding = false
                 isShowingForm = true
             }
     }
@@ -44,7 +42,6 @@ struct PlacesScreen: View {
                         country: "",
                         postalCode: ""
                     )
-                    isAdding = true
                     isShowingForm = true
                 }) {
                     Image(systemName: "plus.circle.fill")
@@ -61,7 +58,7 @@ struct PlacesScreen: View {
         }
         .padding()
         .sheet(isPresented: $isShowingForm) {
-            PlaceForm(place: $place, isAdding: $isAdding)
+            PlaceForm(place: $place)
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
         }

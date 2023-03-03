@@ -3,7 +3,6 @@ import SwiftUI
 struct PeopleScreen: View {
     @EnvironmentObject private var vm: ViewModel
 
-    @State private var isAdding = false
     @State private var isShowingForm = false
     @State private var person = Person(
         firstName: "",
@@ -15,7 +14,6 @@ struct PeopleScreen: View {
         Text("\(person.firstName) \(person.lastName)")
             .onTapGesture {
                 self.person = person
-                isAdding = false
                 isShowingForm = true
             }
     }
@@ -26,7 +24,6 @@ struct PeopleScreen: View {
                 Text("People").font(.largeTitle)
                 Button(action: {
                     person = Person(firstName: "", lastName: "", cellNumber: "")
-                    isAdding = true
                     isShowingForm = true
                 }) {
                     Image(systemName: "plus.circle.fill")
@@ -43,7 +40,7 @@ struct PeopleScreen: View {
         }
         .padding()
         .sheet(isPresented: $isShowingForm) {
-            PersonForm(person: $person, isAdding: $isAdding)
+            PersonForm(person: $person)
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
         }
