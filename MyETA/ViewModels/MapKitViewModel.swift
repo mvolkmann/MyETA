@@ -11,18 +11,12 @@ final class MapKitViewModel: NSObject, ObservableObject {
 
     // MARK: - State
 
-    // These four properties define what the map will display.
-    @Published var center: CLLocationCoordinate2D?
-    @Published var distance = 0.0 // changed in initializer
-
-    @Published var currentPlacemark: CLPlacemark?
     @Published var message: String?
 
     @Published var searchLocations: [String] = []
     @Published var searchQuery = ""
     @Published var selectedPlace: Place?
     @Published var selectedPlacemark: CLPlacemark?
-    @Published var travelSeconds: TimeInterval = 0.0
 
     static var shared = MapKitViewModel()
 
@@ -34,23 +28,13 @@ final class MapKitViewModel: NSObject, ObservableObject {
 
         super.init()
 
-        distance = Self.defaultDistance
-
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        locationManager.delegate = self
 
         // A new query is started automatically when searchQuery changes.
         cancellable = $searchQuery.assign(to: \.queryFragment, on: completer)
-
-        // This cannot precede the call to super.init.
-        completer.delegate = self
-
-        // This specifies the types of search completions to include.
-        // Perhaps all are included if this is not specified.
-        // completer.resultTypes = [.address, .pointOfInterest, .query]
     }
 
     // MARK: - Properties
@@ -110,54 +94,5 @@ final class MapKitViewModel: NSObject, ObservableObject {
     func start() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
-    }
-}
-
-// This is used to get the current user location.
-extension MapKitViewModel: CLLocationManagerDelegate {
-    func locationManager(
-        _: CLLocationManager,
-        didUpdateLocations locations: [CLLocation]
-    ) {
-        // If we already have the placemark, return.
-        guard currentPlacemark == nil else { return }
-
-        if let location = locations.first {
-            center = location.coordinate
-            CLGeocoder().reverseGeocodeLocation(
-                location
-            ) { [weak self] placemarks, error in
-                if let error {
-                    Log.error(error)
-                } else if let self {
-                    self.currentPlacemark = placemarks?.first
-                    self.selectedPlacemark = self.currentPlacemark
-                    // Once we have the location, stop trying to update it.
-                    self.locationManager.stopUpdatingLocation()
-                }
-            }
-        }
-    }
-
-    func locationManager(_: CLLocationManager, didFailWithError _: Error) {
-        Log.error("failed to get current location; user may not have approved")
-        // If the user denies sharing location, to approve it they must:
-        // 1. Open the Settings app.
-        // 2. Go to Privacy ... Location Services.
-        // 3. Tap the name of this app.
-        // 4. Change the option from "Never" to
-        //    "Ask Next Time" or "While Using the App".
-    }
-}
-
-extension MapKitViewModel: MKLocalSearchCompleterDelegate {
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        var locations = completer.results.map { result in
-            let title = result.title
-            let subtitle = result.subtitle
-            return subtitle.isEmpty ? title : title + ", " + subtitle
-        }
-        locations.sort()
-        searchLocations = locations
     }
 }

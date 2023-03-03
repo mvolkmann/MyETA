@@ -1,5 +1,4 @@
 import CoreLocation
-import SwiftUI
 
 struct CoreLocationService {
     static func getPlacemark(
