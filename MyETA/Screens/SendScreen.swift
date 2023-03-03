@@ -29,13 +29,9 @@ struct SendScreen: View {
         let placemark = try await CoreLocationService.getPlacemark(
             from: addressString
         )
-        if let coordinate = placemark.location?.coordinate {
-            let seconds = try await mapKitVM.travelTime(to: coordinate)
-            let eta = Date.now.addingTimeInterval(seconds)
-            return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
-        } else {
-            throw "failed to get coordinates"
-        }
+        let seconds = try await mapKitVM.travelTime(to: placemark)
+        let eta = Date.now.addingTimeInterval(seconds)
+        return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
     }
 
     private func presentMessageCompose() {
@@ -89,6 +85,7 @@ struct SendScreen: View {
                 ProgressView()
             } else {
                 Button("Send ETA", action: presentMessageCompose)
+                    .buttonStyle(.borderedProminent)
                     .disabled(person == nil || place == nil)
             }
 

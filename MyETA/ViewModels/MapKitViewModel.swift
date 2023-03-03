@@ -64,24 +64,27 @@ final class MapKitViewModel: NSObject, ObservableObject {
 
     // MARK: - Methods
 
-    func travelTime(to: CLLocationCoordinate2D) async throws -> TimeInterval {
-        guard let location = locationManager.location else {
-            return 0
-        }
-        print("\(#fileID) \(#function) location =", location)
-        let startPlacemark = MKPlacemark(coordinate: location.coordinate)
-        let endPlacemark = try await CoreLocationService.getPlacemark(from: to)
-        guard let endPlacemark else {
-            throw (
-                "MapKitViewModel.travelTime: failed to get destination placemark"
-            )
+    func travelTime(to: CLPlacemark) async throws -> TimeInterval {
+        guard let fromLocation = locationManager.location else {
+            throw "failed to get current location"
         }
 
+        guard let toLocation = to.location else {
+            throw "failed to get destination location"
+        }
+
+        guard let endCLPlacemark = try await CoreLocationService.getPlacemark(
+            from: toLocation
+        ) else {
+            throw "failed to get destination placemark"
+        }
+        let endPlacemark = MKPlacemark(placemark: endCLPlacemark)
+
+        let startPlacemark = MKPlacemark(coordinate: fromLocation.coordinate)
+
         let request = MKDirections.Request()
-        request.source =
-            MKMapItem(placemark: MKPlacemark(placemark: startPlacemark))
-        request.destination =
-            MKMapItem(placemark: MKPlacemark(placemark: endPlacemark))
+        request.source = MKMapItem(placemark: startPlacemark)
+        request.destination = MKMapItem(placemark: endPlacemark)
         request.transportType = .automobile
 
         // Get multiple options so we can choose the shortest route.
