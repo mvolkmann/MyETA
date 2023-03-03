@@ -13,11 +13,23 @@ struct AddPlace: View {
     @State private var country = ""
     @State private var postalCode = ""
 
-    let textFieldWidth: CGFloat = 250
+    private let textFieldWidth: CGFloat = 250
 
     private var canAdd: Bool {
         !name.isEmpty && !city.isEmpty && !state.isEmpty && postalCode
             .count >= 5
+    }
+
+    private func labeledTextField(
+        label: String,
+        text: Binding<String>,
+        focusedPath: KeyPath<AddPlace, String>
+    ) -> some View {
+        LabeledContent(label) {
+            TextField("", text: text, onCommit: nextFocus)
+                .frame(width: textFieldWidth)
+                .focused($focus, equals: focusedPath)
+        }
     }
 
     private func nextFocus() {
@@ -34,36 +46,36 @@ struct AddPlace: View {
 
     var body: some View {
         VStack {
-            LabeledContent("Name") {
-                TextField("name", text: $name, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.name)
-            }
-            LabeledContent("Street") {
-                TextField("street", text: $street, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.street)
-            }
-            LabeledContent("City") {
-                TextField("city", text: $city, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.city)
-            }
-            LabeledContent("State") {
-                TextField("state", text: $state, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.state)
-            }
-            LabeledContent("Country") {
-                TextField("country", text: $country, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.country)
-            }
-            LabeledContent("Postal Code") {
-                TextField("postal code", text: $postalCode, onCommit: nextFocus)
-                    .frame(width: textFieldWidth)
-                    .focused($focus, equals: \Self.postalCode)
-            }
+            labeledTextField(
+                label: "Name",
+                text: $name,
+                focusedPath: \Self.name
+            )
+            labeledTextField(
+                label: "Street",
+                text: $street,
+                focusedPath: \Self.street
+            )
+            labeledTextField(
+                label: "City",
+                text: $city,
+                focusedPath: \Self.city
+            )
+            labeledTextField(
+                label: "State",
+                text: $state,
+                focusedPath: \Self.state
+            )
+            labeledTextField(
+                label: "Country",
+                text: $country,
+                focusedPath: \Self.country
+            )
+            labeledTextField(
+                label: "Postal Code",
+                text: $postalCode,
+                focusedPath: \Self.postalCode
+            )
 
             HStack {
                 Button("Add Place") {
