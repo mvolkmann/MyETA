@@ -24,7 +24,6 @@ struct CoreLocationService {
         }
     }
 
-    // This is not currently used.
     static func getPlacemark(from addressString: String) async throws
         -> CLPlacemark {
         print(

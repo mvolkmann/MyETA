@@ -16,44 +16,58 @@ struct SendScreen: View {
     @EnvironmentObject private var vm: ViewModel
     @StateObject private var mapKitVM = MapKitViewModel.shared
 
+    @State private var errorMessage: String?
     @State private var person: Person!
     @State private var place: Place!
+    @State private var processing = false
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
-    private func getMessage() async -> String {
-        let latitude = 38.5864931
-        let longitude = -90.2842
-        let location = CLLocationCoordinate2D(
-            latitude: latitude,
-            longitude: longitude
+    private func getMessage() async throws -> String {
+        let addressString =
+            "\(place.street), \(place.city), \(place.state), \(place.postalCode)"
+        let placemark = try await CoreLocationService.getPlacemark(
+            from: addressString
         )
-        do {
-            let seconds = try await mapKitVM.travelTime(to: location)
+        if let coordinate = placemark.location?.coordinate {
+            let seconds = try await mapKitVM.travelTime(to: coordinate)
             let eta = Date.now.addingTimeInterval(seconds)
             return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
-        } catch {
-            return error.localizedDescription
+        } else {
+            throw "failed to get coordinates"
         }
     }
 
     private func presentMessageCompose() {
-        guard MFMessageComposeViewController.canSendText() else { return }
+        guard MFMessageComposeViewController.canSendText() else {
+            errorMessage =
+                "Permission to sent text messages has not been granted."
+            return
+        }
 
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
         if let vc = windowScene?.windows.first?.rootViewController {
             var message = ""
             Task {
-                message = await getMessage()
-                print("\(#fileID) \(#function) message =", message)
-                let composeVC = MFMessageComposeViewController()
-                composeVC.messageComposeDelegate = messageComposeDelegate
-                composeVC.subject = "My ETA" // used?
-                composeVC.recipients = [person.cellNumber]
-                composeVC.body = message
-                vc.present(composeVC, animated: true)
+                do {
+                    processing = true
+                    message = try await getMessage()
+                    errorMessage = nil
+
+                    let composeVC = MFMessageComposeViewController()
+                    composeVC.messageComposeDelegate = messageComposeDelegate
+                    composeVC.recipients = [person.cellNumber]
+                    composeVC.body = message
+                    vc.present(composeVC, animated: true)
+                    processing = false
+                } catch {
+                    errorMessage = error.localizedDescription
+                    processing = false
+                }
             }
+        } else {
+            errorMessage = "Failed to get root ViewController."
         }
     }
 
@@ -64,13 +78,26 @@ struct SendScreen: View {
                     Text("\(person.firstName) \(person.lastName)")
                 }
             }
+
             Picker("Place", selection: $place) {
                 ForEach(vm.places) { place in
                     Text("\(place.name) \(place.street)")
                 }
             }
-            Button("Send ETA", action: presentMessageCompose)
-                .disabled(person == nil || place == nil)
+
+            if processing {
+                ProgressView()
+            } else {
+                Button("Send ETA", action: presentMessageCompose)
+                    .disabled(person == nil || place == nil)
+            }
+
+            if let errorMessage {
+                Text(errorMessage)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
+            }
+
             Spacer()
         }
         .padding()
