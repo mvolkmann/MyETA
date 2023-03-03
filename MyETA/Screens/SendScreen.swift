@@ -13,6 +13,7 @@ private class MessageComposerDelegate: NSObject,
 
 struct SendScreen: View {
     @EnvironmentObject private var vm: ViewModel
+    // @StateObject var coreLocationVM = CoreLocationViewModel()
 
     @State private var person: Person!
     @State private var place: Place!

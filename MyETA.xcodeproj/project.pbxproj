@@ -23,6 +23,10 @@
 		1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956029B1569C00B19F88 /* PersonForm.swift */; };
 		1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956229B157AD00B19F88 /* ViewModel.swift */; };
 		1A71956529B1607500B19F88 /* PlaceForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956429B1607500B19F88 /* PlaceForm.swift */; };
+		1A71956B29B254F000B19F88 /* CoreLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956A29B254F000B19F88 /* CoreLocationViewModel.swift */; };
+		1A71956D29B2590100B19F88 /* MapKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956C29B2590100B19F88 /* MapKitViewModel.swift */; };
+		1A71956F29B25A2700B19F88 /* CLLocationCoordinate2DExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */; };
+		1A71957129B25B8300B19F88 /* CoreLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957029B25B8300B19F88 /* CoreLocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +48,10 @@
 		1A71956029B1569C00B19F88 /* PersonForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonForm.swift; sourceTree = "<group>"; };
 		1A71956229B157AD00B19F88 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		1A71956429B1607500B19F88 /* PlaceForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceForm.swift; sourceTree = "<group>"; };
+		1A71956A29B254F000B19F88 /* CoreLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationViewModel.swift; sourceTree = "<group>"; };
+		1A71956C29B2590100B19F88 /* MapKitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewModel.swift; sourceTree = "<group>"; };
+		1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2DExtension.swift; sourceTree = "<group>"; };
+		1A71957029B25B8300B19F88 /* CoreLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,12 +87,13 @@
 				1A71955F29B155AE00B19F88 /* Info.plist */,
 				1A71953B29B1004B00B19F88 /* MyETAApp.swift */,
 				1A71955229B150ED00B19F88 /* AppInfo.swift */,
+				1A71957029B25B8300B19F88 /* CoreLocationService.swift */,
 				1A71955829B1518A00B19F88 /* Log.swift */,
-				1A71956229B157AD00B19F88 /* ViewModel.swift */,
 				1A71953F29B1004C00B19F88 /* Assets.xcassets */,
 				1A71954B29B14FCE00B19F88 /* Extensions */,
 				1A71955A29B152EA00B19F88 /* Models */,
 				1A71954929B14FBF00B19F88 /* Screens */,
+				1A71957229B25CA500B19F88 /* ViewModels */,
 				1A71954A29B14FC600B19F88 /* Views */,
 				1A71954129B1004C00B19F88 /* Preview Content */,
 			);
@@ -124,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				1A71955429B1512C00B19F88 /* StringExtension.swift */,
+				1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -135,6 +145,16 @@
 				1A71955D29B1532700B19F88 /* Place.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		1A71957229B25CA500B19F88 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1A71956A29B254F000B19F88 /* CoreLocationViewModel.swift */,
+				1A71956C29B2590100B19F88 /* MapKitViewModel.swift */,
+				1A71956229B157AD00B19F88 /* ViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,15 +230,19 @@
 				1A71955C29B152FA00B19F88 /* Person.swift in Sources */,
 				1A71955129B1502300B19F88 /* SendScreen.swift in Sources */,
 				1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */,
+				1A71956B29B254F000B19F88 /* CoreLocationViewModel.swift in Sources */,
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */,
 				1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */,
+				1A71956D29B2590100B19F88 /* MapKitViewModel.swift in Sources */,
 				1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */,
 				1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */,
+				1A71956F29B25A2700B19F88 /* CLLocationCoordinate2DExtension.swift in Sources */,
 				1A71953C29B1004B00B19F88 /* MyETAApp.swift in Sources */,
 				1A71956529B1607500B19F88 /* PlaceForm.swift in Sources */,
+				1A71957129B25B8300B19F88 /* CoreLocationService.swift in Sources */,
 				1A71955E29B1532700B19F88 /* Place.swift in Sources */,
 				1A71954D29B14FE800B19F88 /* PeopleScreen.swift in Sources */,
 			);
