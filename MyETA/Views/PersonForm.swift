@@ -6,12 +6,13 @@ struct PersonForm: View {
 
     @FocusState private var focus: AnyKeyPath?
 
-    @State private var firstName = ""
-    @State private var lastName = ""
     @State private var cellNumber = ""
+    @State private var firstName = ""
+    @State private var index: Int?
+    @State private var lastName = ""
 
-    var person: Binding<Person>
-    let isAdding: Binding<Bool>
+    @Binding var person: Person
+    @Binding var isAdding: Bool
 
     private let textFieldWidth: CGFloat = 250
 
@@ -28,6 +29,7 @@ struct PersonForm: View {
             TextField("", text: text, onCommit: nextFocus)
                 .frame(width: textFieldWidth)
                 .focused($focus, equals: focusedPath)
+                .autocorrectionDisabled(true)
         }
     }
 
@@ -59,13 +61,18 @@ struct PersonForm: View {
             )
 
             HStack {
-                let word = isAdding.wrappedValue ? "Add" : "Update"
+                let word = isAdding ? "Add" : "Update"
                 Button("\(word) Person") {
-                    vm.addPerson(Person(
+                    let person = Person(
                         firstName: firstName,
                         lastName: lastName,
                         cellNumber: cellNumber
-                    ))
+                    )
+                    if isAdding {
+                        vm.people.append(person)
+                    } else if let index {
+                        vm.people[index] = person
+                    }
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
@@ -78,10 +85,11 @@ struct PersonForm: View {
         .textFieldStyle(.roundedBorder)
         .padding()
         .onAppear {
-            print("\(#fileID) \(#function) person =", person)
-            firstName = person.wrappedValue.firstName
-            lastName = person.wrappedValue.lastName
-            cellNumber = person.wrappedValue.cellNumber
+            firstName = person.firstName
+            lastName = person.lastName
+            cellNumber = person.cellNumber
+
+            index = vm.people.firstIndex { p in p.id == person.id }
 
             focus = \Self.firstName // initial focus
         }

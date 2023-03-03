@@ -14,7 +14,6 @@ struct PeopleScreen: View {
     private func personRow(_ person: Person) -> some View {
         Text("\(person.firstName) \(person.lastName)")
             .onTapGesture {
-                print("\(#fileID) \(#function) person =", person)
                 self.person = person
                 isAdding = false
                 isShowingForm = true
@@ -26,6 +25,7 @@ struct PeopleScreen: View {
             HStack {
                 Text("People").font(.largeTitle)
                 Button(action: {
+                    person = Person(firstName: "", lastName: "", cellNumber: "")
                     isAdding = true
                     isShowingForm = true
                 }) {

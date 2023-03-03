@@ -1,3 +1,5 @@
+import Foundation
+
 struct Place: Hashable, Identifiable {
     let name: String
     let street: String
@@ -6,5 +8,5 @@ struct Place: Hashable, Identifiable {
     let country: String
     let postalCode: String
 
-    var id: String { street + "|" + postalCode }
+    let id = UUID()
 }

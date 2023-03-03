@@ -33,12 +33,4 @@ class ViewModel: ObservableObject {
             postalCode: "63304"
         )
     ]
-
-    func addPerson(_ person: Person) {
-        people.append(person)
-    }
-
-    func addPlace(_ place: Place) {
-        places.append(place)
-    }
 }

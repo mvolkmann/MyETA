@@ -1,17 +1,21 @@
 import SwiftUI
 
-struct AddPlace: View {
+struct PlaceForm: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var vm: ViewModel
 
     @FocusState private var focus: AnyKeyPath?
 
-    @State private var name = ""
-    @State private var street = ""
     @State private var city = ""
-    @State private var state = ""
     @State private var country = ""
+    @State private var index: Int?
+    @State private var name = ""
     @State private var postalCode = ""
+    @State private var state = ""
+    @State private var street = ""
+
+    @Binding var place: Place
+    @Binding var isAdding: Bool
 
     private let textFieldWidth: CGFloat = 250
 
@@ -23,12 +27,13 @@ struct AddPlace: View {
     private func labeledTextField(
         label: String,
         text: Binding<String>,
-        focusedPath: KeyPath<AddPlace, String>
+        focusedPath: KeyPath<PlaceForm, String>
     ) -> some View {
         LabeledContent(label) {
             TextField("", text: text, onCommit: nextFocus)
                 .frame(width: textFieldWidth)
                 .focused($focus, equals: focusedPath)
+                .autocorrectionDisabled(true)
         }
     }
 
@@ -78,15 +83,21 @@ struct AddPlace: View {
             )
 
             HStack {
-                Button("Add Place") {
-                    vm.addPlace(Place(
+                let word = isAdding ? "Add" : "Update"
+                Button("\(word) Place") {
+                    let place = Place(
                         name: name,
                         street: street,
                         city: city,
                         state: state,
                         country: country.isEmpty ? "USA" : country,
                         postalCode: postalCode
-                    ))
+                    )
+                    if isAdding {
+                        vm.places.append(place)
+                    } else if let index {
+                        vm.places[index] = place
+                    }
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
@@ -99,6 +110,15 @@ struct AddPlace: View {
         .textFieldStyle(.roundedBorder)
         .padding()
         .onAppear {
+            name = place.name
+            street = place.street
+            city = place.city
+            state = place.state
+            country = place.country
+            postalCode = place.postalCode
+
+            index = vm.places.firstIndex { p in p.id == place.id }
+
             focus = \Self.name // initial focus
         }
     }

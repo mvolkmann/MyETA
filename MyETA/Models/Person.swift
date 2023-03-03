@@ -1,7 +1,9 @@
-struct Person: Hashable, Identifiable {
-    let firstName: String
-    let lastName: String
-    let cellNumber: String
+import Foundation
 
-    var id: String { cellNumber }
+struct Person: Hashable, Identifiable {
+    var firstName: String
+    var lastName: String
+    var cellNumber: String
+
+    let id = UUID()
 }
