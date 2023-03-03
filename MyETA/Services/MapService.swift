@@ -1,41 +1,39 @@
-import MapKit // This imports CoreLocation.
-import SwiftUI
+import CoreLocation
+import MapKit
 
-// Add this key in the Info tab for each target that queries current location:
-// Privacy - Location When In Use Usage Description
-final class MapKitViewModel: NSObject, ObservableObject {
-    // MARK: - State
+struct MapService {
+    static func getPlacemark(
+        from location: CLLocation
+    ) async throws -> CLPlacemark? {
+        // Cannot call this more than 50 times per second.
+        let placemarks = try await CLGeocoder()
+            .reverseGeocodeLocation(location)
+        if let placemark = placemarks.first {
+            return placemark
+        } else {
+            throw "no placemarks found for \(location)"
+        }
+    }
 
-    @Published var message: String?
+    static func getPlacemark(
+        from addressString: String
+    ) async throws -> CLPlacemark {
+        // Cannot call this more than 50 times per second.
+        let placemarks = try await CLGeocoder()
+            .geocodeAddressString(addressString)
+        if let placemark = placemarks.first {
+            return placemark
+        } else {
+            throw "no placemarks found for \(addressString)"
+        }
+    }
 
-    @Published var searchLocations: [String] = []
-    @Published var searchQuery = ""
-    @Published var selectedPlace: Place?
-    @Published var selectedPlacemark: CLPlacemark?
-
-    // MARK: - Properties
-
-    static var shared = MapKitViewModel()
-
-    private let completer = MKLocalSearchCompleter()
-    private let locationManager = CLLocationManager()
-
-    // MARK: - Initializer
-
-    override init() {
-        super.init()
-
+    static func travelTime(to: CLPlacemark) async throws -> TimeInterval {
+        let locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
 
-        // A new query is started automatically when searchQuery changes.
-        _ = $searchQuery.assign(to: \.queryFragment, on: completer)
-    }
-
-    // MARK: - Methods
-
-    func travelTime(to: CLPlacemark) async throws -> TimeInterval {
         // TODO: Will this get a new current location every time this is called?
         guard let fromLocation = locationManager.location else {
             throw "failed to get current location"
@@ -45,7 +43,7 @@ final class MapKitViewModel: NSObject, ObservableObject {
             throw "failed to get destination location"
         }
 
-        guard let endCLPlacemark = try await CoreLocationService.getPlacemark(
+        guard let endCLPlacemark = try await Self.getPlacemark(
             from: toLocation
         ) else {
             throw "failed to get destination placemark"

@@ -14,7 +14,6 @@ private class MessageComposerDelegate: NSObject,
 
 struct SendScreen: View {
     @EnvironmentObject private var vm: ViewModel
-    @StateObject private var mapKitVM = MapKitViewModel.shared
 
     @State private var errorMessage: String?
     @State private var person: Person!
@@ -26,10 +25,10 @@ struct SendScreen: View {
     private func getMessage() async throws -> String {
         let addressString =
             "\(place.street), \(place.city), \(place.state), \(place.postalCode)"
-        let placemark = try await CoreLocationService.getPlacemark(
+        let placemark = try await MapService.getPlacemark(
             from: addressString
         )
-        let seconds = try await mapKitVM.travelTime(to: placemark)
+        let seconds = try await MapService.travelTime(to: placemark)
         let eta = Date.now.addingTimeInterval(seconds)
         return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
     }
