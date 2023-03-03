@@ -1,14 +1,9 @@
-import Combine // for AnyCancellable
 import MapKit // This imports CoreLocation.
 import SwiftUI
 
 // Add this key in the Info tab for each target that queries current location:
 // Privacy - Location When In Use Usage Description
 final class MapKitViewModel: NSObject, ObservableObject {
-    // MARK: - Constants
-
-    private static let defaultDistance = 1000.0 // in meters
-
     // MARK: - State
 
     @Published var message: String?
@@ -18,37 +13,30 @@ final class MapKitViewModel: NSObject, ObservableObject {
     @Published var selectedPlace: Place?
     @Published var selectedPlacemark: CLPlacemark?
 
+    // MARK: - Properties
+
     static var shared = MapKitViewModel()
+
+    private let completer = MKLocalSearchCompleter()
+    private let locationManager = CLLocationManager()
 
     // MARK: - Initializer
 
     override init() {
-        // This must precede the call to super.init.
-        completer = MKLocalSearchCompleter()
-
         super.init()
 
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
 
         // A new query is started automatically when searchQuery changes.
-        cancellable = $searchQuery.assign(to: \.queryFragment, on: completer)
+        _ = $searchQuery.assign(to: \.queryFragment, on: completer)
     }
-
-    // MARK: - Properties
-
-    // This can be used to cancel an active search, but we aren't using it.
-    private var cancellable: AnyCancellable?
-
-    private var completer: MKLocalSearchCompleter
-
-    private let locationManager = CLLocationManager()
 
     // MARK: - Methods
 
     func travelTime(to: CLPlacemark) async throws -> TimeInterval {
+        // TODO: Will this get a new current location every time this is called?
         guard let fromLocation = locationManager.location else {
             throw "failed to get current location"
         }
@@ -62,13 +50,14 @@ final class MapKitViewModel: NSObject, ObservableObject {
         ) else {
             throw "failed to get destination placemark"
         }
-        let endPlacemark = MKPlacemark(placemark: endCLPlacemark)
-
-        let startPlacemark = MKPlacemark(coordinate: fromLocation.coordinate)
 
         let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: startPlacemark)
-        request.destination = MKMapItem(placemark: endPlacemark)
+        request.source = MKMapItem(
+            placemark: MKPlacemark(coordinate: fromLocation.coordinate)
+        )
+        request.destination = MKMapItem(
+            placemark: MKPlacemark(placemark: endCLPlacemark)
+        )
         request.transportType = .automobile
 
         // Get multiple options so we can choose the shortest route.
@@ -76,7 +65,6 @@ final class MapKitViewModel: NSObject, ObservableObject {
         request.requestsAlternateRoutes = true
 
         let directions = MKDirections(request: request)
-
         let response = try await directions.calculate()
 
         // Sort the routes from shortest to longest travel time.
@@ -88,11 +76,5 @@ final class MapKitViewModel: NSObject, ObservableObject {
         }
 
         return route.expectedTravelTime
-    }
-
-    // This is called by ContentView.
-    func start() {
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
     }
 }
