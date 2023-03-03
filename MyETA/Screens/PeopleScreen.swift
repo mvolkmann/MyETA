@@ -3,7 +3,6 @@ import SwiftUI
 struct PeopleScreen: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(
-        entity: PersonEntity.entity(), // TODO: needed?
         sortDescriptors: [
             NSSortDescriptor(key: "lastName", ascending: true),
             NSSortDescriptor(key: "firstName", ascending: true)

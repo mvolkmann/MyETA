@@ -11,7 +11,6 @@ private struct PersonRow: View {
 struct PlacesScreen: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(
-        entity: PlaceEntity.entity(), // TODO: needed?
         sortDescriptors: [
             NSSortDescriptor(key: "name", ascending: true)
         ]

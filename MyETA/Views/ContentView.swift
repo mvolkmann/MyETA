@@ -3,20 +3,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var appInfo: AppInfo?
     @State private var isInfoPresented = false
-    @State private var selection = "Workout"
+    @State private var selection = "Send"
 
     var body: some View {
-        /*
-         VStack {
-             Button("Send") {
-                 presentMessageCompose()
-             }
-             .buttonStyle(.borderedProminent)
-             Spacer()
-         }
-         .padding()
-         */
-
         NavigationStack {
             TabView(selection: $selection) {
                 SendScreen()

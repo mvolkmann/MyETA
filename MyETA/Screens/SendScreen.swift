@@ -15,7 +15,6 @@ struct SendScreen: View {
     @Environment(\.managedObjectContext) var moc
 
     @FetchRequest(
-        entity: PersonEntity.entity(), // TODO: needed?
         sortDescriptors: [
             NSSortDescriptor(key: "lastName", ascending: true),
             NSSortDescriptor(key: "firstName", ascending: true)
@@ -23,7 +22,6 @@ struct SendScreen: View {
     ) var people: FetchedResults<PersonEntity>
 
     @FetchRequest(
-        entity: PlaceEntity.entity(), // TODO: needed?
         sortDescriptors: [
             NSSortDescriptor(key: "name", ascending: true)
         ]
@@ -31,8 +29,8 @@ struct SendScreen: View {
 
     @State private var errorMessage: String?
     @State private var processing = false
-    @State private var selectedPerson: PersonEntity?
-    @State private var selectedPlace: PlaceEntity?
+    @State private var selectedPersonId: UUID?
+    @State private var selectedPlaceId: UUID?
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
@@ -58,14 +56,6 @@ struct SendScreen: View {
     }
 
     private func presentMessageCompose() {
-        print(
-            "\(#fileID) \(#function) selectedPerson =",
-            selectedPerson ?? "none"
-        )
-        print(
-            "\(#fileID) \(#function) selectedPlace =",
-            selectedPlace ?? "none"
-        )
         guard MFMessageComposeViewController.canSendText() else {
             errorMessage =
                 "Permission to sent text messages has not been granted."
@@ -103,22 +93,37 @@ struct SendScreen: View {
         }
     }
 
+    private var selectedPerson: PersonEntity? {
+        people.first { p in p.id == selectedPersonId }
+    }
+
+    private var selectedPlace: PlaceEntity? {
+        places.first { p in p.id == selectedPlaceId }
+    }
+
     var body: some View {
         VStack {
-            Picker("Person", selection: $selectedPerson) {
-                ForEach(people) { person in
-                    let firstName = person.firstName ?? ""
-                    let lastName = person.lastName ?? ""
-                    Text("\(firstName) \(lastName)").tag(person)
+            if people.isEmpty {
+                Text("Tap the People tab to add some.")
+            } else {
+                // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
+                Picker("Person", selection: $selectedPersonId) {
+                    ForEach(people, id: \.id) { (person: PersonEntity) in
+                        let firstName = person.firstName ?? ""
+                        let lastName = person.lastName ?? ""
+                        Text("\(firstName) \(lastName)").tag(person)
+                    }
                 }
             }
-            .onChange(of: selectedPerson) { p in
-                print("\(#fileID) \(#function) p =", p)
-            }
 
-            Picker("Place", selection: $selectedPlace) {
-                ForEach(places) { place in
-                    Text(place.name ?? "").tag(place)
+            if places.isEmpty {
+                Text("Tap the Places tab to add some.")
+            } else {
+                // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
+                Picker("Place", selection: $selectedPlaceId) {
+                    ForEach(places) { place in
+                        Text(place.name ?? "").tag(place)
+                    }
                 }
             }
 
@@ -141,9 +146,8 @@ struct SendScreen: View {
         .padding()
         .pickerStyle(.wheel)
         .onAppear {
-            print("\(#fileID) \(#function) entered")
-            selectedPerson = people.first
-            selectedPlace = places.first
+            selectedPersonId = people.first?.id
+            selectedPlaceId = places.first?.id
         }
     }
 }
