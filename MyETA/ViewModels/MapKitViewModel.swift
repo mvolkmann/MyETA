@@ -99,11 +99,11 @@ final class MapKitViewModel: NSObject, ObservableObject {
         var routes = response.routes
         routes.sort { $0.expectedTravelTime < $1.expectedTravelTime }
 
-        if let route = routes.first {
-            return route.expectedTravelTime
-        } else {
-            return 0 // couldn't determine
+        guard let route = routes.first else {
+            throw "failed to find a route"
         }
+
+        return route.expectedTravelTime
     }
 
     // This is called by ContentView.
