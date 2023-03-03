@@ -12,30 +12,57 @@ private class MessageComposerDelegate: NSObject,
 }
 
 struct SendScreen: View {
-    @EnvironmentObject private var vm: ViewModel
+    @Environment(\.managedObjectContext) var moc
+
+    @FetchRequest(
+        entity: PersonEntity.entity(), // TODO: needed?
+        sortDescriptors: [
+            NSSortDescriptor(key: "lastName", ascending: true),
+            NSSortDescriptor(key: "firstName", ascending: true)
+        ]
+    ) var people: FetchedResults<PersonEntity>
+
+    @FetchRequest(
+        entity: PlaceEntity.entity(), // TODO: needed?
+        sortDescriptors: [
+            NSSortDescriptor(key: "name", ascending: true)
+        ]
+    ) var places: FetchedResults<PlaceEntity>
 
     @State private var errorMessage: String?
-    @State private var person: Person!
-    @State private var place: Place!
+    @State private var person: PersonEntity!
+    @State private var place: PlaceEntity!
     @State private var processing = false
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
     private func getMessage() async throws -> String {
-        let addressString =
-            "\(place.street), \(place.city), \(place.state), \(place.postalCode)"
+        let street = place.street ?? ""
+        let city = place.city ?? ""
+        let state = place.state ?? ""
+        let postalCode = place.postalCode ?? ""
+        let addressString = "\(street), \(city), \(state), \(postalCode)"
         let placemark = try await MapService.getPlacemark(
             from: addressString
         )
+
         let seconds = try await MapService.travelTime(to: placemark)
         let eta = Date.now.addingTimeInterval(seconds)
-        return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
+
+        let firstName = person.firstName ?? ""
+        let name = place.name ?? ""
+        return "\(firstName), I will arrive at \(name) around \(eta.time)."
     }
 
     private func presentMessageCompose() {
         guard MFMessageComposeViewController.canSendText() else {
             errorMessage =
                 "Permission to sent text messages has not been granted."
+            return
+        }
+
+        guard let cellNumber = person.cellNumber else {
+            errorMessage = "The selected person has no cell number."
             return
         }
 
@@ -51,7 +78,7 @@ struct SendScreen: View {
 
                     let composeVC = MFMessageComposeViewController()
                     composeVC.messageComposeDelegate = messageComposeDelegate
-                    composeVC.recipients = [person.cellNumber]
+                    composeVC.recipients = [cellNumber]
                     composeVC.body = message
                     vc.present(composeVC, animated: true)
                     processing = false
@@ -68,14 +95,18 @@ struct SendScreen: View {
     var body: some View {
         VStack {
             Picker("Person", selection: $person) {
-                ForEach(vm.people) { person in
-                    Text("\(person.firstName) \(person.lastName)")
+                ForEach(people) { person in
+                    let firstName = person.firstName ?? ""
+                    let lastName = person.lastName ?? ""
+                    Text("\(firstName) \(lastName)")
                 }
             }
 
             Picker("Place", selection: $place) {
-                ForEach(vm.places) { place in
-                    Text("\(place.name) \(place.street)")
+                ForEach(places) { place in
+                    let name = place.name ?? ""
+                    let street = place.street ?? ""
+                    Text("\(name) \(street)")
                 }
             }
 
@@ -98,8 +129,8 @@ struct SendScreen: View {
         .padding()
         .pickerStyle(.wheel)
         .onAppear {
-            person = vm.people.first
-            place = vm.places.first
+            person = people.first
+            place = places.first
         }
     }
 }

@@ -3,7 +3,6 @@ import SwiftUI
 struct PersonForm: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject private var vm: ViewModel
 
     @FocusState private var focus: AnyKeyPath?
 

@@ -2,19 +2,20 @@ import SwiftUI
 
 struct PlaceForm: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var vm: ViewModel
+    @Environment(\.managedObjectContext) var moc
 
     @FocusState private var focus: AnyKeyPath?
 
     @State private var city = ""
     @State private var country = ""
+    @State private var errorMessage: String?
     @State private var index: Int?
     @State private var name = ""
     @State private var postalCode = ""
     @State private var state = ""
     @State private var street = ""
 
-    @Binding var place: Place
+    @Binding var place: PlaceEntity?
 
     private let textFieldWidth: CGFloat = 250
 
@@ -40,6 +41,16 @@ struct PlaceForm: View {
         case \Self.country: focus = \Self.postalCode
         case \Self.postalCode: focus = \Self.name
         default: break
+        }
+    }
+
+    private func save() {
+        do {
+            try moc.save()
+            errorMessage = nil
+        } catch {
+            Log.error(error)
+            errorMessage = error.localizedDescription
         }
     }
 
@@ -82,20 +93,21 @@ struct PlaceForm: View {
             )
 
             HStack {
-                let word = index == nil ? "Add" : "Update"
+                let adding = place == nil
+                let word = adding ? "Add" : "Update"
                 Button("\(word) Place") {
-                    let place = Place(
-                        name: name,
-                        street: street,
-                        city: city,
-                        state: state,
-                        country: country.isEmpty ? "USA" : country,
-                        postalCode: postalCode
-                    )
-                    if let index {
-                        vm.places[index] = place
-                    } else {
-                        vm.places.append(place)
+                    if adding {
+                        place = PlaceEntity(context: moc)
+                    }
+                    if let place {
+                        place.name = name
+                        place.street = street
+                        place.city = city
+                        place.state = state
+                        place.country = country.isEmpty ? "USA" : country
+                        place.postalCode = postalCode
+                        place.id = UUID()
+                        save()
                     }
                     dismiss()
                 }
@@ -105,18 +117,22 @@ struct PlaceForm: View {
                 Button("Cancel") { dismiss() }
                     .buttonStyle(.bordered)
             }
+
+            if let errorMessage {
+                Text(errorMessage)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
+            }
         }
         .textFieldStyle(.roundedBorder)
         .padding()
         .onAppear {
-            name = place.name
-            street = place.street
-            city = place.city
-            state = place.state
-            country = place.country
-            postalCode = place.postalCode
-
-            index = vm.places.firstIndex { p in p.id == place.id }
+            name = place?.name ?? ""
+            street = place?.street ?? ""
+            city = place?.city ?? ""
+            state = place?.state ?? ""
+            country = place?.country ?? ""
+            postalCode = place?.postalCode ?? ""
 
             focus = \Self.name // initial focus
         }
