@@ -29,10 +29,7 @@ struct PlacesScreen: View {
     }
 
     private func placeRow(_ place: PlaceEntity) -> some View {
-        let name = place.name ?? ""
-        let street = place.street ?? ""
-        let city = place.city ?? ""
-        return Text("\(name), \(street), \(city)")
+        Text(place.name ?? "")
             .onTapGesture {
                 self.place = place
                 isShowingForm = true

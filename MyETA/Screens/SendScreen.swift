@@ -30,13 +30,16 @@ struct SendScreen: View {
     ) var places: FetchedResults<PlaceEntity>
 
     @State private var errorMessage: String?
-    @State private var person: PersonEntity!
-    @State private var place: PlaceEntity!
     @State private var processing = false
+    @State private var selectedPerson: PersonEntity?
+    @State private var selectedPlace: PlaceEntity?
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
     private func getMessage() async throws -> String {
+        guard let person = selectedPerson else { return "" }
+        guard let place = selectedPlace else { return "" }
+
         let street = place.street ?? ""
         let city = place.city ?? ""
         let state = place.state ?? ""
@@ -55,13 +58,21 @@ struct SendScreen: View {
     }
 
     private func presentMessageCompose() {
+        print(
+            "\(#fileID) \(#function) selectedPerson =",
+            selectedPerson ?? "none"
+        )
+        print(
+            "\(#fileID) \(#function) selectedPlace =",
+            selectedPlace ?? "none"
+        )
         guard MFMessageComposeViewController.canSendText() else {
             errorMessage =
                 "Permission to sent text messages has not been granted."
             return
         }
 
-        guard let cellNumber = person.cellNumber else {
+        guard let cellNumber = selectedPerson?.cellNumber else {
             errorMessage = "The selected person has no cell number."
             return
         }
@@ -94,19 +105,20 @@ struct SendScreen: View {
 
     var body: some View {
         VStack {
-            Picker("Person", selection: $person) {
+            Picker("Person", selection: $selectedPerson) {
                 ForEach(people) { person in
                     let firstName = person.firstName ?? ""
                     let lastName = person.lastName ?? ""
-                    Text("\(firstName) \(lastName)")
+                    Text("\(firstName) \(lastName)").tag(person)
                 }
             }
+            .onChange(of: selectedPerson) { p in
+                print("\(#fileID) \(#function) p =", p)
+            }
 
-            Picker("Place", selection: $place) {
+            Picker("Place", selection: $selectedPlace) {
                 ForEach(places) { place in
-                    let name = place.name ?? ""
-                    let street = place.street ?? ""
-                    Text("\(name) \(street)")
+                    Text(place.name ?? "").tag(place)
                 }
             }
 
@@ -115,7 +127,7 @@ struct SendScreen: View {
             } else {
                 Button("Send ETA", action: presentMessageCompose)
                     .buttonStyle(.borderedProminent)
-                    .disabled(person == nil || place == nil)
+                    .disabled(selectedPerson == nil || selectedPlace == nil)
             }
 
             if let errorMessage {
@@ -129,8 +141,9 @@ struct SendScreen: View {
         .padding()
         .pickerStyle(.wheel)
         .onAppear {
-            person = people.first
-            place = places.first
+            print("\(#fileID) \(#function) entered")
+            selectedPerson = people.first
+            selectedPlace = places.first
         }
     }
 }
