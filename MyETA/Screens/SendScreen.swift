@@ -1,3 +1,4 @@
+import CoreLocation
 import MessageUI
 import SwiftUI
 
@@ -13,16 +14,27 @@ private class MessageComposerDelegate: NSObject,
 
 struct SendScreen: View {
     @EnvironmentObject private var vm: ViewModel
-    // @StateObject var coreLocationVM = CoreLocationViewModel()
+    @StateObject private var mapKitVM = MapKitViewModel.shared
 
     @State private var person: Person!
     @State private var place: Place!
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
-    private func getMessage() -> String {
-        // TODO: Use CoreLocation and MapKit to get ETA.
-        return "I will arrive close to 5:30 PM."
+    private func getMessage() async -> String {
+        let latitude = 38.5864931
+        let longitude = -90.2842
+        let location = CLLocationCoordinate2D(
+            latitude: latitude,
+            longitude: longitude
+        )
+        do {
+            let seconds = try await mapKitVM.travelTime(to: location)
+            let eta = Date.now.addingTimeInterval(seconds)
+            return "\(person.firstName), I will arrive at \(place.name) around \(eta.time)."
+        } catch {
+            return error.localizedDescription
+        }
     }
 
     private func presentMessageCompose() {
@@ -31,12 +43,17 @@ struct SendScreen: View {
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
         if let vc = windowScene?.windows.first?.rootViewController {
-            let composeVC = MFMessageComposeViewController()
-            composeVC.messageComposeDelegate = messageComposeDelegate
-            composeVC.subject = "My ETA" // used?
-            composeVC.recipients = [person.cellNumber]
-            composeVC.body = getMessage()
-            vc.present(composeVC, animated: true)
+            var message = ""
+            Task {
+                message = await getMessage()
+                print("\(#fileID) \(#function) message =", message)
+                let composeVC = MFMessageComposeViewController()
+                composeVC.messageComposeDelegate = messageComposeDelegate
+                composeVC.subject = "My ETA" // used?
+                composeVC.recipients = [person.cellNumber]
+                composeVC.body = message
+                vc.present(composeVC, animated: true)
+            }
         }
     }
 

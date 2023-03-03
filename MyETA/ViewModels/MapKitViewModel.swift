@@ -2,9 +2,8 @@ import Combine // for AnyCancellable
 import MapKit // This imports CoreLocation.
 import SwiftUI
 
-// Add these keys in the Info tab for each target that queries current location:
+// Add this key in the Info tab for each target that queries current location:
 // Privacy - Location When In Use Usage Description
-// Privacy - Location Always and When In Use Usage Description
 final class MapKitViewModel: NSObject, ObservableObject {
     // MARK: - Constants
 
@@ -65,11 +64,12 @@ final class MapKitViewModel: NSObject, ObservableObject {
 
     // MARK: - Methods
 
-    func travelTime(
-        from: CLLocationCoordinate2D,
-        to: CLLocationCoordinate2D
-    ) async throws -> TimeInterval {
-        let startPlacemark = MKPlacemark(coordinate: from)
+    func travelTime(to: CLLocationCoordinate2D) async throws -> TimeInterval {
+        guard let location = locationManager.location else {
+            return 0
+        }
+        print("\(#fileID) \(#function) location =", location)
+        let startPlacemark = MKPlacemark(coordinate: location.coordinate)
         let endPlacemark = try await CoreLocationService.getPlacemark(from: to)
         guard let endPlacemark else {
             throw (

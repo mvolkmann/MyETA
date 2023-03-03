@@ -27,6 +27,7 @@
 		1A71956D29B2590100B19F88 /* MapKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956C29B2590100B19F88 /* MapKitViewModel.swift */; };
 		1A71956F29B25A2700B19F88 /* CLLocationCoordinate2DExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */; };
 		1A71957129B25B8300B19F88 /* CoreLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957029B25B8300B19F88 /* CoreLocationService.swift */; };
+		1A71957429B273C500B19F88 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957329B273C500B19F88 /* DateExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		1A71956C29B2590100B19F88 /* MapKitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewModel.swift; sourceTree = "<group>"; };
 		1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2DExtension.swift; sourceTree = "<group>"; };
 		1A71957029B25B8300B19F88 /* CoreLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationService.swift; sourceTree = "<group>"; };
+		1A71957329B273C500B19F88 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			children = (
 				1A71955429B1512C00B19F88 /* StringExtension.swift */,
 				1A71956E29B25A2600B19F88 /* CLLocationCoordinate2DExtension.swift */,
+				1A71957329B273C500B19F88 /* DateExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */,
 				1A71956B29B254F000B19F88 /* CoreLocationViewModel.swift in Sources */,
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
+				1A71957429B273C500B19F88 /* DateExtension.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */,
@@ -377,6 +381,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyETA/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Needed to get current location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -406,6 +411,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyETA/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Needed to get current location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

@@ -1,6 +1,7 @@
 import CoreLocation
 import SwiftUI
 
+// TODO: Do you need this file?
 class CoreLocationViewModel: NSObject, ObservableObject,
     CLLocationManagerDelegate {
     @Published var error: Error?
