@@ -2,16 +2,18 @@ import SwiftUI
 
 struct PersonForm: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.managedObjectContext) var moc
     @EnvironmentObject private var vm: ViewModel
 
     @FocusState private var focus: AnyKeyPath?
 
     @State private var cellNumber = ""
+    @State private var errorMessage: String?
     @State private var firstName = ""
     @State private var index: Int?
     @State private var lastName = ""
 
-    @Binding var person: Person
+    @Binding var person: PersonEntity?
 
     private let textFieldWidth: CGFloat = 250
 
@@ -37,8 +39,19 @@ struct PersonForm: View {
         }
     }
 
+    private func save() {
+        do {
+            try moc.save()
+            errorMessage = nil
+        } catch {
+            Log.error(error)
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private var valid: Bool {
-        !firstName.isEmpty && !lastName.isEmpty && cellNumber.count >= 10
+        // !firstName.isEmpty && !lastName.isEmpty && cellNumber.count >= 10
+        !firstName.isEmpty && !lastName.isEmpty && !cellNumber.isEmpty
     }
 
     var body: some View {
@@ -60,17 +73,18 @@ struct PersonForm: View {
             )
 
             HStack {
-                let word = index == nil ? "Add" : "Update"
+                let adding = person == nil
+                let word = adding ? "Add" : "Update"
                 Button("\(word) Person") {
-                    let person = Person(
-                        firstName: firstName,
-                        lastName: lastName,
-                        cellNumber: cellNumber
-                    )
-                    if let index {
-                        vm.people[index] = person
-                    } else {
-                        vm.people.append(person)
+                    if adding {
+                        person = PersonEntity(context: moc)
+                    }
+                    if let person {
+                        person.firstName = firstName
+                        person.lastName = lastName
+                        person.cellNumber = cellNumber
+                        person.id = UUID()
+                        save()
                     }
                     dismiss()
                 }
@@ -80,15 +94,19 @@ struct PersonForm: View {
                 Button("Cancel") { dismiss() }
                     .buttonStyle(.bordered)
             }
+
+            if let errorMessage {
+                Text(errorMessage)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
+            }
         }
         .textFieldStyle(.roundedBorder)
         .padding()
         .onAppear {
-            firstName = person.firstName
-            lastName = person.lastName
-            cellNumber = person.cellNumber
-
-            index = vm.people.firstIndex { p in p.id == person.id }
+            firstName = person?.firstName ?? ""
+            lastName = person?.lastName ?? ""
+            cellNumber = person?.cellNumber ?? ""
 
             focus = \Self.firstName // initial focus
         }

@@ -25,6 +25,8 @@
 		1A71956529B1607500B19F88 /* PlaceForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71956429B1607500B19F88 /* PlaceForm.swift */; };
 		1A71957129B25B8300B19F88 /* MapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957029B25B8300B19F88 /* MapService.swift */; };
 		1A71957429B273C500B19F88 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957329B273C500B19F88 /* DateExtension.swift */; };
+		1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957629B28BC100B19F88 /* Model.xcdatamodeld */; };
+		1A71957A29B2926C00B19F88 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957929B2926C00B19F88 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		1A71956429B1607500B19F88 /* PlaceForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceForm.swift; sourceTree = "<group>"; };
 		1A71957029B25B8300B19F88 /* MapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapService.swift; sourceTree = "<group>"; };
 		1A71957329B273C500B19F88 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		1A71957729B28BC100B19F88 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		1A71957929B2926C00B19F88 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +139,7 @@
 		1A71955A29B152EA00B19F88 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1A71957629B28BC100B19F88 /* Model.xcdatamodeld */,
 				1A71955B29B152FA00B19F88 /* Person.swift */,
 				1A71955D29B1532700B19F88 /* Place.swift */,
 			);
@@ -155,6 +160,7 @@
 				1A71955229B150ED00B19F88 /* AppInfo.swift */,
 				1A71957029B25B8300B19F88 /* MapService.swift */,
 				1A71955829B1518A00B19F88 /* Log.swift */,
+				1A71957929B2926C00B19F88 /* DataController.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -237,10 +243,12 @@
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71956329B157AD00B19F88 /* ViewModel.swift in Sources */,
+				1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */,
 				1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */,
 				1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */,
 				1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */,
 				1A71953C29B1004B00B19F88 /* MyETAApp.swift in Sources */,
+				1A71957A29B2926C00B19F88 /* DataController.swift in Sources */,
 				1A71956529B1607500B19F88 /* PlaceForm.swift in Sources */,
 				1A71957129B25B8300B19F88 /* MapService.swift in Sources */,
 				1A71955E29B1532700B19F88 /* Place.swift in Sources */,
@@ -447,6 +455,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1A71957629B28BC100B19F88 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1A71957729B28BC100B19F88 /* Model.xcdatamodel */,
+			);
+			currentVersion = 1A71957729B28BC100B19F88 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1A71953029B1004B00B19F88 /* Project object */;
 }
