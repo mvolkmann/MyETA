@@ -29,25 +29,27 @@ struct MapService {
     }
 
     static func travelTime(to: CLPlacemark) async throws -> TimeInterval {
+        // Get the current location.
+        // TODO: Will this get a new current location every time this is called?
         let locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
-
-        // TODO: Will this get a new current location every time this is called?
         guard let fromLocation = locationManager.location else {
             throw "failed to get current location"
         }
 
+        // Get the destination placemark.
         guard let toLocation = to.location else {
             throw "failed to get destination location"
         }
-
         guard let endCLPlacemark = try await Self.getPlacemark(
             from: toLocation
         ) else {
             throw "failed to get destination placemark"
         }
+
+        // Get driving route options.
 
         let request = MKDirections.Request()
         request.source = MKMapItem(
