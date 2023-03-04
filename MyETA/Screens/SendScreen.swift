@@ -12,6 +12,7 @@ private class MessageComposerDelegate: NSObject,
 }
 
 struct SendScreen: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
 
     @FetchRequest(
@@ -101,53 +102,66 @@ struct SendScreen: View {
         places.first { p in p.id == selectedPlaceId }
     }
 
+    private func missingData(_ tab: String) -> some View {
+        Text("Tap the \(tab) tab to add some.")
+            .font(.headline)
+            .padding(.bottom)
+    }
+
     var body: some View {
-        VStack {
-            if people.isEmpty {
-                Text("Tap the People tab to add some.")
-            } else {
-                // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
-                Picker("Person", selection: $selectedPersonId) {
-                    ForEach(people, id: \.id) { (person: PersonEntity) in
-                        let firstName = person.firstName ?? ""
-                        let lastName = person.lastName ?? ""
-                        Text("\(firstName) \(lastName)").tag(person)
+        ZStack {
+            let fill = gradient(colorScheme: colorScheme)
+            Rectangle().fill(fill).ignoresSafeArea()
+
+            VStack {
+                Spacer()
+
+                if people.isEmpty {
+                    missingData("People")
+                } else {
+                    // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
+                    Picker("Person", selection: $selectedPersonId) {
+                        ForEach(people, id: \.id) { (person: PersonEntity) in
+                            let firstName = person.firstName ?? ""
+                            let lastName = person.lastName ?? ""
+                            Text("\(firstName) \(lastName)").tag(person)
+                        }
                     }
                 }
-            }
 
-            if places.isEmpty {
-                Text("Tap the Places tab to add some.")
-            } else {
-                // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
-                Picker("Place", selection: $selectedPlaceId) {
-                    ForEach(places) { place in
-                        Text(place.name ?? "").tag(place)
+                if places.isEmpty {
+                    missingData("Places")
+                } else {
+                    // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
+                    Picker("Place", selection: $selectedPlaceId) {
+                        ForEach(places) { place in
+                            Text(place.name ?? "").tag(place)
+                        }
                     }
                 }
-            }
 
-            if processing {
-                ProgressView()
-            } else {
-                Button("Send ETA", action: presentMessageCompose)
-                    .buttonStyle(.borderedProminent)
-                    .disabled(selectedPerson == nil || selectedPlace == nil)
-            }
+                if processing {
+                    ProgressView()
+                } else if !people.isEmpty, !places.isEmpty {
+                    Button("Send ETA", action: presentMessageCompose)
+                        .buttonStyle(.borderedProminent)
+                        .disabled(selectedPerson == nil || selectedPlace == nil)
+                }
 
-            if let errorMessage {
-                Text(errorMessage)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-            }
+                if let errorMessage {
+                    Text(errorMessage)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                }
 
-            Spacer()
-        }
-        .padding()
-        .pickerStyle(.wheel)
-        .onAppear {
-            selectedPersonId = people.first?.id
-            selectedPlaceId = places.first?.id
+                Spacer()
+            }
+            .padding()
+            .pickerStyle(.wheel)
+            .onAppear {
+                selectedPersonId = people.first?.id
+                selectedPlaceId = places.first?.id
+            }
         }
     }
 }

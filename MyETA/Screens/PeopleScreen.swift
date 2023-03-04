@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct PeopleScreen: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
+
     @FetchRequest(
         sortDescriptors: [
             NSSortDescriptor(key: "lastName", ascending: true),
@@ -41,41 +43,45 @@ struct PeopleScreen: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                Text("People").font(.largeTitle)
-                Button(action: {
-                    person = nil
-                    isShowingForm = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25)
+        ZStack {
+            let fill = gradient(colorScheme: colorScheme)
+            Rectangle().fill(fill).ignoresSafeArea()
+            VStack {
+                HStack {
+                    Text("People").font(.largeTitle)
+                    Button(action: {
+                        person = nil
+                        isShowingForm = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                    }
                 }
-            }
 
-            if let errorMessage {
-                Text(errorMessage)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-            }
-
-            // editActions doesn't work with CoreData models.
-            // List($vm.people, editActions: .all) { $person in
-            List {
-                ForEach(people) { person in
-                    personRow(person)
+                if let errorMessage {
+                    Text(errorMessage)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
                 }
-                .onDelete(perform: deletePerson)
+
+                // editActions doesn't work with CoreData models.
+                // List($vm.people, editActions: .all) { $person in
+                List {
+                    ForEach(people) { person in
+                        personRow(person)
+                    }
+                    .onDelete(perform: deletePerson)
+                }
+                .listStyle(.grouped)
             }
-            .listStyle(.grouped)
-        }
-        .padding()
-        .sheet(isPresented: $isShowingForm) {
-            PersonForm(person: $person)
-                .presentationDragIndicator(.visible)
-                .presentationDetents([.large])
+            .padding()
+            .sheet(isPresented: $isShowingForm) {
+                PersonForm(person: $person)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
         }
     }
 }

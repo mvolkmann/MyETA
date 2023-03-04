@@ -26,6 +26,7 @@
 		1A71957429B273C500B19F88 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957329B273C500B19F88 /* DateExtension.swift */; };
 		1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957629B28BC100B19F88 /* Model.xcdatamodeld */; };
 		1A71957A29B2926C00B19F88 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957929B2926C00B19F88 /* DataController.swift */; };
+		1A71957C29B2CCF500B19F88 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957B29B2CCF500B19F88 /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		1A71957329B273C500B19F88 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1A71957729B28BC100B19F88 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1A71957929B2926C00B19F88 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		1A71957B29B2CCF500B19F88 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				1A71953B29B1004B00B19F88 /* MyETAApp.swift */,
+				1A71957B29B2CCF500B19F88 /* Utilities.swift */,
 				1A71953F29B1004C00B19F88 /* Assets.xcassets */,
 				1A71955F29B155AE00B19F88 /* Info.plist */,
 				1A71954B29B14FCE00B19F88 /* Extensions */,
@@ -230,6 +233,7 @@
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
 				1A71957429B273C500B19F88 /* DateExtension.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
+				1A71957C29B2CCF500B19F88 /* Utilities.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */,
 				1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */,

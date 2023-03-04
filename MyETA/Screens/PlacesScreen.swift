@@ -9,7 +9,9 @@ private struct PersonRow: View {
 }
 
 struct PlacesScreen: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
+
     @FetchRequest(
         sortDescriptors: [
             NSSortDescriptor(key: "name", ascending: true)
@@ -46,40 +48,45 @@ struct PlacesScreen: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                Text("Places").font(.largeTitle)
-                Button(action: {
-                    place = nil
-                    isShowingForm = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25)
-                }
-            }
+        ZStack {
+            let fill = gradient(colorScheme: colorScheme)
+            Rectangle().fill(fill).ignoresSafeArea()
 
-            if let errorMessage {
-                Text(errorMessage)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-            }
-
-            // editActions doesn't work with CoreData models.
-            // List($vm.places, editActions: .all) { $place in
-            List {
-                ForEach(places) { place in
-                    placeRow(place)
+            VStack {
+                HStack {
+                    Text("Places").font(.largeTitle)
+                    Button(action: {
+                        place = nil
+                        isShowingForm = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                    }
                 }
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                }
+
+                // editActions doesn't work with CoreData models.
+                // List($vm.places, editActions: .all) { $place in
+                List {
+                    ForEach(places) { place in
+                        placeRow(place)
+                    }
+                }
+                .listStyle(.grouped)
             }
-            .listStyle(.grouped)
-        }
-        .padding()
-        .sheet(isPresented: $isShowingForm) {
-            PlaceForm(place: $place)
-                .presentationDragIndicator(.visible)
-                .presentationDetents([.large])
+            .padding()
+            .sheet(isPresented: $isShowingForm) {
+                PlaceForm(place: $place)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
         }
     }
 }
