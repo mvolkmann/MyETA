@@ -19,6 +19,7 @@ struct PlacesScreen: View {
     ) var places: FetchedResults<PlaceEntity>
 
     @State private var errorMessage: String?
+    @State private var isActive = false
     @State private var isShowingForm = false
     @State private var place: PlaceEntity?
 
@@ -53,18 +54,20 @@ struct PlacesScreen: View {
             Rectangle().fill(fill).ignoresSafeArea()
 
             VStack {
-                HStack {
-                    Text("Places").font(.largeTitle)
-                    Button(action: {
-                        place = nil
-                        isShowingForm = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 25)
-                    }
-                }
+                /*
+                 HStack {
+                     Text("Places").font(.largeTitle)
+                     Button(action: {
+                         place = nil
+                         isShowingForm = true
+                     }) {
+                         Image(systemName: "plus.circle.fill")
+                             .resizable()
+                             .scaledToFit()
+                             .frame(width: 25)
+                     }
+                 }
+                 */
 
                 if let errorMessage {
                     Text(errorMessage)
@@ -87,10 +90,25 @@ struct PlacesScreen: View {
                 Spacer()
             }
             .padding()
-            .sheet(isPresented: $isShowingForm) {
-                PlaceForm(place: $place)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.large])
+        }
+        .onAppear { isActive = true }
+        .onDisappear { isActive = false }
+        .sheet(isPresented: $isShowingForm) {
+            PlaceForm(place: $place)
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.large])
+        }
+        .toolbar {
+            if isActive {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        place = nil
+                        isShowingForm = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                    }
+                    .accessibilityIdentifier("add-place-button")
+                }
             }
         }
     }

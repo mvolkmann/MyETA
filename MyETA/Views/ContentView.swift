@@ -42,18 +42,6 @@ struct ContentView: View {
                     .accessibilityIdentifier("info-button")
                 }
             }
-
-            /* Do you need a way to dismiss the on-screen keyboard?
-             .toolbar {
-                 ToolbarItem(placement: .keyboard) {
-                     Button {
-                         isFocused = false
-                     } label: {
-                         Image(systemName: "keyboard.chevron.compact.down")
-                     }
-                 }
-             }
-              */
         }
 
         .sheet(isPresented: $isInfoPresented) {

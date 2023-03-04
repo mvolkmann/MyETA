@@ -13,6 +13,7 @@ struct PeopleScreen: View {
 
     @State private var errorMessage: String?
     @State private var isShowingForm = false
+    @State private var isActive = false
     @State private var person: PersonEntity?
 
     private func deletePerson(at indexSet: IndexSet) {
@@ -47,19 +48,6 @@ struct PeopleScreen: View {
             let fill = gradient(colorScheme: colorScheme)
             Rectangle().fill(fill).ignoresSafeArea()
             VStack {
-                HStack {
-                    Text("People").font(.largeTitle)
-                    Button(action: {
-                        person = nil
-                        isShowingForm = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 25)
-                    }
-                }
-
                 if let errorMessage {
                     Text(errorMessage)
                         .fontWeight(.bold)
@@ -81,10 +69,25 @@ struct PeopleScreen: View {
                 Spacer()
             }
             .padding()
-            .sheet(isPresented: $isShowingForm) {
-                PersonForm(person: $person)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.large])
+        }
+        .onAppear { isActive = true }
+        .onDisappear { isActive = false }
+        .sheet(isPresented: $isShowingForm) {
+            PersonForm(person: $person)
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.large])
+        }
+        .toolbar {
+            if isActive {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        person = nil
+                        isShowingForm = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                    }
+                    .accessibilityIdentifier("add-person-button")
+                }
             }
         }
     }
