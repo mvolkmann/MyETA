@@ -66,15 +66,19 @@ struct PeopleScreen: View {
                         .foregroundColor(.red)
                 }
 
-                // editActions doesn't work with CoreData models.
-                // List($vm.people, editActions: .all) { $person in
-                List {
-                    ForEach(people) { person in
-                        personRow(person)
+                if !people.isEmpty {
+                    // editActions doesn't work with CoreData models.
+                    // List($vm.people, editActions: .all) { $person in
+                    List {
+                        ForEach(people) { person in
+                            personRow(person)
+                        }
+                        .onDelete(perform: deletePerson)
                     }
-                    .onDelete(perform: deletePerson)
+                    .scrollContentBackground(.hidden) // hides default background
                 }
-                .listStyle(.grouped)
+
+                Spacer()
             }
             .padding()
             .sheet(isPresented: $isShowingForm) {

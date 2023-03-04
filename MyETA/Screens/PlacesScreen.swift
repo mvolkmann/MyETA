@@ -72,14 +72,19 @@ struct PlacesScreen: View {
                         .foregroundColor(.red)
                 }
 
-                // editActions doesn't work with CoreData models.
-                // List($vm.places, editActions: .all) { $place in
-                List {
-                    ForEach(places) { place in
-                        placeRow(place)
+                if !places.isEmpty {
+                    // editActions doesn't work with CoreData models.
+                    // List($vm.places, editActions: .all) { $place in
+                    List {
+                        ForEach(places) { place in
+                            placeRow(place)
+                        }
+                        .onDelete(perform: deletePlace)
                     }
+                    .scrollContentBackground(.hidden) // hides default background
                 }
-                .listStyle(.grouped)
+
+                Spacer()
             }
             .padding()
             .sheet(isPresented: $isShowingForm) {
