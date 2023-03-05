@@ -1,31 +1,22 @@
 import SwiftUI
 
-struct ErrorWrapper: Identifiable {
-    let error: Error?
-    let message: String
-    let id = UUID()
-}
-
+// This is inspired by the Azam Sharp YouTube video "Presenting Errors
+// Globally in SwiftUI Applications" at https://youtu.be/QfDd9GxjFvk .
 class ErrorViewModel: ObservableObject {
-    @Published var haveError = false
-    @Published var wrapper: ErrorWrapper?
+    @Published var errorOccurred = false
+    @Published private var error: Error?
+    @Published private var message = ""
 
-    func notify(error: Error? = nil, message: String) {
+    func alert(error: Error? = nil, message: String) {
         if let error { Log.error(error) }
-        wrapper = ErrorWrapper(error: error, message: message)
-        haveError = true
+        self.error = error
+        self.message = message
+        errorOccurred = true
     }
 
     var text: Text {
-        guard let wrapper else {
-            return Text("No error occurred.")
-        }
-
-        if let error = wrapper.error {
-            let desc = error.localizedDescription
-            return Text(wrapper.message + "\n" + desc)
-        } else {
-            return Text(wrapper.message)
-        }
+        var content = message
+        if let error { content += "\n" + error.localizedDescription }
+        return Text(content)
     }
 }

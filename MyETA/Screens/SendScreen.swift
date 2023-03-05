@@ -65,14 +65,14 @@ struct SendScreen: View {
 
     private func presentMessageCompose() {
         guard MFMessageComposeViewController.canSendText() else {
-            errorVM.notify(
+            errorVM.alert(
                 message: "Permission to send text messages has not been granted."
             )
             return
         }
 
         guard let cellNumber = selectedPerson?.cellNumber else {
-            errorVM.notify(
+            errorVM.alert(
                 message: "The selected person has no cell number."
             )
             return
@@ -94,7 +94,7 @@ struct SendScreen: View {
                     vc.present(composeVC, animated: true)
                     processing = false
                 } catch {
-                    errorVM.notify(
+                    errorVM.alert(
                         error: error,
                         message: "Failed to compose text message."
                     )
@@ -102,7 +102,7 @@ struct SendScreen: View {
                 }
             }
         } else {
-            errorVM.notify(
+            errorVM.alert(
                 message: "Failed to get root ViewController."
             )
         }

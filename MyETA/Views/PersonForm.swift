@@ -42,7 +42,7 @@ struct PersonForm: View {
         do {
             try moc.save()
         } catch {
-            errorVM.notify(
+            errorVM.alert(
                 error: error,
                 message: "Failed to save person to Core Data."
             )
@@ -55,54 +55,65 @@ struct PersonForm: View {
     }
 
     var body: some View {
-        VStack {
-            labeledTextField(
-                label: "First Name",
-                text: $firstName,
-                focusedPath: \Self.firstName
-            )
-            labeledTextField(
-                label: "Last Name",
-                text: $lastName,
-                focusedPath: \Self.lastName
-            )
-            labeledTextField(
-                label: "Cell Number",
-                text: $cellNumber,
-                focusedPath: \Self.cellNumber
-            )
+        // A NavigationView is required in order for
+        // the keyboard toolbar button to appear and work.
+        NavigationView {
+            VStack {
+                labeledTextField(
+                    label: "First Name",
+                    text: $firstName,
+                    focusedPath: \Self.firstName
+                )
+                labeledTextField(
+                    label: "Last Name",
+                    text: $lastName,
+                    focusedPath: \Self.lastName
+                )
+                labeledTextField(
+                    label: "Cell Number",
+                    text: $cellNumber,
+                    focusedPath: \Self.cellNumber
+                )
 
-            HStack {
-                let adding = person == nil
-                let word = adding ? "Add" : "Update"
-                Button("\(word) Person") {
-                    if adding {
-                        person = PersonEntity(context: moc)
+                HStack {
+                    let adding = person == nil
+                    let word = adding ? "Add" : "Update"
+                    Button("\(word) Person") {
+                        if adding {
+                            person = PersonEntity(context: moc)
+                        }
+                        if let person {
+                            person.firstName = firstName
+                            person.lastName = lastName
+                            person.cellNumber = cellNumber
+                            person.id = UUID()
+                            save()
+                        }
+                        dismiss()
                     }
-                    if let person {
-                        person.firstName = firstName
-                        person.lastName = lastName
-                        person.cellNumber = cellNumber
-                        person.id = UUID()
-                        save()
-                    }
-                    dismiss()
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!valid)
+
+                    Button("Cancel") { dismiss() }
+                        .buttonStyle(.bordered)
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(!valid)
-
-                Button("Cancel") { dismiss() }
-                    .buttonStyle(.bordered)
             }
-        }
-        .textFieldStyle(.roundedBorder)
-        .padding()
-        .onAppear {
-            firstName = person?.firstName ?? ""
-            lastName = person?.lastName ?? ""
-            cellNumber = person?.cellNumber ?? ""
+            .padding()
+            .onAppear {
+                firstName = person?.firstName ?? ""
+                lastName = person?.lastName ?? ""
+                cellNumber = person?.cellNumber ?? ""
 
-            focus = \Self.firstName // initial focus
+                focus = \Self.firstName // initial focus
+            }
+            .textFieldStyle(.roundedBorder)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button(action: dismissKeyboard) {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
+                }
+            }
         }
     }
 }

@@ -61,7 +61,7 @@ struct PlaceForm: View {
         do {
             try moc.save()
         } catch {
-            errorVM.notify(
+            errorVM.alert(
                 error: error,
                 message: "Failed to save place to Core Data."
             )
@@ -81,95 +81,110 @@ struct PlaceForm: View {
     }
 
     var body: some View {
-        ZStack {
-            let fill = gradient(.orange, colorScheme: colorScheme)
-            Rectangle().fill(fill).ignoresSafeArea()
+        // A NavigationView is required in order for
+        // the keyboard toolbar button to appear and work.
+        NavigationView {
+            ZStack {
+                let fill = gradient(.orange, colorScheme: colorScheme)
+                Rectangle().fill(fill).ignoresSafeArea()
 
-            VStack {
-                labeledTextField(
-                    label: "Name",
-                    text: $name,
-                    focusedPath: \Self.name
-                )
-                labeledTextField(
-                    label: "Street",
-                    text: $street,
-                    focusedPath: \Self.street
-                )
-                labeledTextField(
-                    label: "City",
-                    text: $city,
-                    focusedPath: \Self.city
-                )
-                labeledTextField(
-                    label: "State",
-                    text: $state,
-                    focusedPath: \Self.state
-                )
-                labeledTextField(
-                    label: "Country",
-                    text: $country,
-                    focusedPath: \Self.country
-                )
-                labeledTextField(
-                    label: "Postal Code",
-                    text: $postalCode,
-                    focusedPath: \Self.postalCode
-                )
-
-                if validAddress && region.center.latitude != 0 {
-                    Map(coordinateRegion: $region, showsUserLocation: true)
-                        .frame(width: 200, height: 200)
-                }
-
-                HStack {
-                    let adding = place == nil
-                    let word = adding ? "Add" : "Update"
-                    Button("\(word) Place") {
-                        if adding {
-                            place = PlaceEntity(context: moc)
-                        }
-                        if let place {
-                            place.name = name
-                            place.street = street
-                            place.city = city
-                            place.state = state
-                            place.country = country.isEmpty ? "USA" : country
-                            place.postalCode = postalCode
-                            place.id = UUID()
-                            save()
-                        }
-                        dismiss()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!validPlace)
-
-                    Button("Cancel") { dismiss() }
-                        .buttonStyle(.bordered)
-                }
-            }
-            .textFieldStyle(.roundedBorder)
-            .padding()
-            .onAppear {
-                name = place?.name ?? ""
-                street = place?.street ?? ""
-                city = place?.city ?? ""
-                state = place?.state ?? ""
-                country = place?.country ?? ""
-                postalCode = place?.postalCode ?? ""
-
-                focus = \Self.name // initial focus
-            }
-            .onChange(of: addressString) { _ in
-                guard validAddress else { return }
-
-                print("\(#fileID) \(#function) addressString =", addressString)
-                Task {
-                    placemark = try? await MapService.getPlacemark(
-                        from: addressString
+                VStack {
+                    labeledTextField(
+                        label: "Name",
+                        text: $name,
+                        focusedPath: \Self.name
                     )
-                    if let placemark, let location = placemark.location {
-                        region.center = location.coordinate
+                    labeledTextField(
+                        label: "Street",
+                        text: $street,
+                        focusedPath: \Self.street
+                    )
+                    labeledTextField(
+                        label: "City",
+                        text: $city,
+                        focusedPath: \Self.city
+                    )
+                    labeledTextField(
+                        label: "State",
+                        text: $state,
+                        focusedPath: \Self.state
+                    )
+                    labeledTextField(
+                        label: "Country",
+                        text: $country,
+                        focusedPath: \Self.country
+                    )
+                    labeledTextField(
+                        label: "Postal Code",
+                        text: $postalCode,
+                        focusedPath: \Self.postalCode
+                    )
+
+                    if validAddress && region.center.latitude != 0 {
+                        Map(coordinateRegion: $region, showsUserLocation: true)
+                            .frame(width: 200, height: 200)
+                    }
+
+                    HStack {
+                        let adding = place == nil
+                        let word = adding ? "Add" : "Update"
+                        Button("\(word) Place") {
+                            if adding {
+                                place = PlaceEntity(context: moc)
+                            }
+                            if let place {
+                                place.name = name
+                                place.street = street
+                                place.city = city
+                                place.state = state
+                                place.country = country
+                                    .isEmpty ? "USA" : country
+                                place.postalCode = postalCode
+                                place.id = UUID()
+                                save()
+                            }
+                            dismiss()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(!validPlace)
+
+                        Button("Cancel") { dismiss() }
+                            .buttonStyle(.bordered)
+                    }
+                }
+                .textFieldStyle(.roundedBorder)
+                .padding()
+                .onAppear {
+                    name = place?.name ?? ""
+                    street = place?.street ?? ""
+                    city = place?.city ?? ""
+                    state = place?.state ?? ""
+                    country = place?.country ?? ""
+                    postalCode = place?.postalCode ?? ""
+
+                    focus = \Self.name // initial focus
+                }
+                .onChange(of: addressString) { _ in
+                    guard validAddress else { return }
+
+                    print(
+                        "\(#fileID) \(#function) addressString =",
+                        addressString
+                    )
+                    Task {
+                        placemark = try? await MapService.getPlacemark(
+                            from: addressString
+                        )
+                        if let placemark, let location = placemark.location {
+                            region.center = location.coordinate
+                        }
+                    }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Button(action: dismissKeyboard) {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                        }
                     }
                 }
             }

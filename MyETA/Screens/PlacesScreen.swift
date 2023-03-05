@@ -42,7 +42,7 @@ struct PlacesScreen: View {
         do {
             try moc.save()
         } catch {
-            errorVM.notify(
+            errorVM.alert(
                 error: error,
                 message: "Failed to save places change to Core Data."
             )

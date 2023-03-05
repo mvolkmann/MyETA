@@ -48,7 +48,7 @@ struct ContentView: View {
 
         .alert(
             "Error",
-            isPresented: $errorVM.haveError,
+            isPresented: $errorVM.errorOccurred,
             actions: {}, // no custom buttons
             message: { errorVM.text }
         )
