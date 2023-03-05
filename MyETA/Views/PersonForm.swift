@@ -3,11 +3,11 @@ import SwiftUI
 struct PersonForm: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var errorVM: ErrorViewModel
 
     @FocusState private var focus: AnyKeyPath?
 
     @State private var cellNumber = ""
-    @State private var errorMessage: String?
     @State private var firstName = ""
     @State private var index: Int?
     @State private var lastName = ""
@@ -41,10 +41,11 @@ struct PersonForm: View {
     private func save() {
         do {
             try moc.save()
-            errorMessage = nil
         } catch {
-            Log.error(error)
-            errorMessage = error.localizedDescription
+            errorVM.notify(
+                error: error,
+                message: "Failed to save person to Core Data."
+            )
         }
     }
 
@@ -92,12 +93,6 @@ struct PersonForm: View {
 
                 Button("Cancel") { dismiss() }
                     .buttonStyle(.bordered)
-            }
-
-            if let errorMessage {
-                Text(errorMessage)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
             }
         }
         .textFieldStyle(.roundedBorder)

@@ -3,6 +3,7 @@ import SwiftUI
 struct PeopleScreen: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var errorVM: ErrorViewModel
 
     @FetchRequest(
         sortDescriptors: [
@@ -11,7 +12,6 @@ struct PeopleScreen: View {
         ]
     ) var people: FetchedResults<PersonEntity>
 
-    @State private var errorMessage: String?
     @State private var isShowingForm = false
     @State private var isActive = false
     @State private var person: PersonEntity?
@@ -36,10 +36,11 @@ struct PeopleScreen: View {
     private func save() {
         do {
             try moc.save()
-            errorMessage = nil
         } catch {
-            Log.error(error)
-            errorMessage = error.localizedDescription
+            errorVM.notify(
+                error: error,
+                message: "Failed to save people change to Core Data."
+            )
         }
     }
 
@@ -47,13 +48,8 @@ struct PeopleScreen: View {
         ZStack {
             let fill = gradient(colorScheme: colorScheme)
             Rectangle().fill(fill).ignoresSafeArea()
-            VStack {
-                if let errorMessage {
-                    Text(errorMessage)
-                        .fontWeight(.bold)
-                        .foregroundColor(.red)
-                }
 
+            VStack {
                 if !people.isEmpty {
                     // editActions doesn't work with CoreData models.
                     // List($vm.people, editActions: .all) { $person in

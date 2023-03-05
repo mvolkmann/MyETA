@@ -2,6 +2,31 @@ import CoreLocation
 import MapKit
 
 struct MapService {
+    static func getAddressString(
+        street: String,
+        city: String,
+        state: String,
+        postalCode: String
+    ) -> String {
+        "\(street), \(city), \(state), \(postalCode)"
+    }
+
+    static func getPlacemark(
+        from place: PlaceEntity
+    ) async throws -> CLPlacemark? {
+        let street = place.street ?? ""
+        let city = place.city ?? ""
+        let state = place.state ?? ""
+        let postalCode = place.postalCode ?? ""
+        let addressString = Self.getAddressString(
+            street: street,
+            city: city,
+            state: state,
+            postalCode: postalCode
+        )
+        return try await MapService.getPlacemark(from: addressString)
+    }
+
     static func getPlacemark(
         from location: CLLocation
     ) async throws -> CLPlacemark? {

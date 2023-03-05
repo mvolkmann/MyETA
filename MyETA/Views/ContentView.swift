@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject private var errorVM: ErrorViewModel
+
     @State private var appInfo: AppInfo?
     @State private var isInfoPresented = false
     @State private var selection = "Send"
@@ -43,6 +45,13 @@ struct ContentView: View {
                 }
             }
         }
+
+        .alert(
+            "Error",
+            isPresented: $errorVM.haveError,
+            actions: {}, // no custom buttons
+            message: { errorVM.text }
+        )
 
         .sheet(isPresented: $isInfoPresented) {
             Info(appInfo: appInfo)

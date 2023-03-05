@@ -1,3 +1,5 @@
+import CoreLocation
+import MapKit
 import MessageUI
 import SwiftUI
 
@@ -14,6 +16,7 @@ private class MessageComposerDelegate: NSObject,
 struct SendScreen: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var errorVM: ErrorViewModel
 
     @FetchRequest(
         sortDescriptors: [
@@ -28,7 +31,15 @@ struct SendScreen: View {
         ]
     ) var places: FetchedResults<PlaceEntity>
 
-    @State private var errorMessage: String?
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(
+            latitude: 38.7094263,
+            longitude: -90.5971701
+        ),
+        latitudinalMeters: 1000,
+        longitudinalMeters: 1000
+    )
+
     @State private var processing = false
     @State private var selectedPersonId: UUID?
     @State private var selectedPlaceId: UUID?
@@ -39,14 +50,10 @@ struct SendScreen: View {
         guard let person = selectedPerson else { return "" }
         guard let place = selectedPlace else { return "" }
 
-        let street = place.street ?? ""
-        let city = place.city ?? ""
-        let state = place.state ?? ""
-        let postalCode = place.postalCode ?? ""
-        let addressString = "\(street), \(city), \(state), \(postalCode)"
-        let placemark = try await MapService.getPlacemark(
-            from: addressString
-        )
+        guard let placemark = try await MapService.getPlacemark(from: place)
+        else {
+            throw "No placemark found for place."
+        }
 
         let seconds = try await MapService.travelTime(to: placemark)
         let eta = Date.now.addingTimeInterval(seconds)
@@ -58,13 +65,16 @@ struct SendScreen: View {
 
     private func presentMessageCompose() {
         guard MFMessageComposeViewController.canSendText() else {
-            errorMessage =
-                "Permission to sent text messages has not been granted."
+            errorVM.notify(
+                message: "Permission to send text messages has not been granted."
+            )
             return
         }
 
         guard let cellNumber = selectedPerson?.cellNumber else {
-            errorMessage = "The selected person has no cell number."
+            errorVM.notify(
+                message: "The selected person has no cell number."
+            )
             return
         }
 
@@ -76,7 +86,6 @@ struct SendScreen: View {
                 do {
                     processing = true
                     message = try await getMessage()
-                    errorMessage = nil
 
                     let composeVC = MFMessageComposeViewController()
                     composeVC.messageComposeDelegate = messageComposeDelegate
@@ -85,12 +94,17 @@ struct SendScreen: View {
                     vc.present(composeVC, animated: true)
                     processing = false
                 } catch {
-                    errorMessage = error.localizedDescription
+                    errorVM.notify(
+                        error: error,
+                        message: "Failed to compose text message."
+                    )
                     processing = false
                 }
             }
         } else {
-            errorMessage = "Failed to get root ViewController."
+            errorVM.notify(
+                message: "Failed to get root ViewController."
+            )
         }
     }
 
@@ -127,6 +141,7 @@ struct SendScreen: View {
                             Text("\(firstName) \(lastName)").tag(person)
                         }
                     }
+                    .border(.white)
                 }
 
                 if places.isEmpty {
@@ -138,6 +153,15 @@ struct SendScreen: View {
                             Text(place.name ?? "").tag(place)
                         }
                     }
+                    .border(.white)
+                }
+
+                if selectedPersonId != nil, selectedPlaceId != nil {
+                    VStack(spacing: 0) {
+                        Text("Your Current Location").font(.headline)
+                        Map(coordinateRegion: $region, showsUserLocation: true)
+                            .frame(width: 200, height: 200)
+                    }
                 }
 
                 if processing {
@@ -146,12 +170,6 @@ struct SendScreen: View {
                     Button("Send ETA", action: presentMessageCompose)
                         .buttonStyle(.borderedProminent)
                         .disabled(selectedPerson == nil || selectedPlace == nil)
-                }
-
-                if let errorMessage {
-                    Text(errorMessage)
-                        .fontWeight(.bold)
-                        .foregroundColor(.red)
                 }
 
                 Spacer()

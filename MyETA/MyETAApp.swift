@@ -12,6 +12,7 @@ struct MyETAApp: App {
                     \.managedObjectContext,
                     dataController.container.viewContext
                 )
+                .environmentObject(ErrorViewModel())
         }
     }
 }

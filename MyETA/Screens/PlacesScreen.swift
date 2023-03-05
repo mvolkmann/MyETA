@@ -11,6 +11,7 @@ private struct PersonRow: View {
 struct PlacesScreen: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var errorVM: ErrorViewModel
 
     @FetchRequest(
         sortDescriptors: [
@@ -18,7 +19,6 @@ struct PlacesScreen: View {
         ]
     ) var places: FetchedResults<PlaceEntity>
 
-    @State private var errorMessage: String?
     @State private var isActive = false
     @State private var isShowingForm = false
     @State private var place: PlaceEntity?
@@ -41,10 +41,11 @@ struct PlacesScreen: View {
     private func save() {
         do {
             try moc.save()
-            errorMessage = nil
         } catch {
-            Log.error(error)
-            errorMessage = error.localizedDescription
+            errorVM.notify(
+                error: error,
+                message: "Failed to save places change to Core Data."
+            )
         }
     }
 
@@ -68,12 +69,6 @@ struct PlacesScreen: View {
                      }
                  }
                  */
-
-                if let errorMessage {
-                    Text(errorMessage)
-                        .fontWeight(.bold)
-                        .foregroundColor(.red)
-                }
 
                 if !places.isEmpty {
                     // editActions doesn't work with CoreData models.
