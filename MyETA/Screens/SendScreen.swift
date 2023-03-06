@@ -252,11 +252,7 @@ struct SendScreen: View {
             .onAppear {
                 selectedPersonId = people.first?.id
                 selectedPlaceId = places.first?.id
-
-                // TODO: Why is this delay necessary?
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    refreshLocation()
-                }
+                refreshLocation()
             }
             .onChange(of: selectedPlace) { _ in
                 eta = nil
