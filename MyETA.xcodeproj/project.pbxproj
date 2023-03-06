@@ -29,7 +29,6 @@
 		1A71957C29B2CCF500B19F88 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A71957B29B2CCF500B19F88 /* Utilities.swift */; };
 		1A83CD0F29B4E28B00FA7FAD /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */; };
 		1A83CD1129B4ED9200FA7FAD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */; };
-		1A83CD1429B56D1800FA7FAD /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1329B56D1800FA7FAD /* LocationViewModel.swift */; };
 		1A83CD1629B573E200FA7FAD /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +57,6 @@
 		1A71957B29B2CCF500B19F88 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewModel.swift; sourceTree = "<group>"; };
 		1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
-		1A83CD1329B56D1800FA7FAD /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */,
-				1A83CD1329B56D1800FA7FAD /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -252,7 +249,6 @@
 				1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */,
 				1A83CD1629B573E200FA7FAD /* CLLocationCoordinate2D.swift in Sources */,
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
-				1A83CD1429B56D1800FA7FAD /* LocationViewModel.swift in Sources */,
 				1A71957429B273C500B19F88 /* DateExtension.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A83CD0F29B4E28B00FA7FAD /* ErrorViewModel.swift in Sources */,

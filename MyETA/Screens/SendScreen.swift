@@ -42,8 +42,6 @@ struct SendScreen: View {
     @State private var selectedPersonId: UUID?
     @State private var selectedPlaceId: UUID?
 
-    private let locationVM = LocationViewModel.shared
-
     private let messageComposeDelegate = MessageComposerDelegate()
 
     private func getMessage() async throws -> String {
@@ -123,8 +121,15 @@ struct SendScreen: View {
     }
 
     private func refreshLocation() {
-        print("\(#fileID) \(#function) entered")
-        locationVM.requestLocation()
+        do {
+            let location = try MapService.currentLocation()
+            region.center = location.coordinate
+        } catch {
+            errorVM.alert(
+                error: error,
+                message: "Failed to get current location."
+            )
+        }
     }
 
     var body: some View {
@@ -191,11 +196,7 @@ struct SendScreen: View {
             .onAppear {
                 selectedPersonId = people.first?.id
                 selectedPlaceId = places.first?.id
-            }
-            .onChange(of: locationVM.location) { location in
-                if let location {
-                    region.center = location
-                }
+                refreshLocation()
             }
         }
     }
