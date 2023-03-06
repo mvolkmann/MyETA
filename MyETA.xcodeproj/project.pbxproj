@@ -83,6 +83,7 @@
 		1A83CD2529B6559500FA7FAD /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		1A83CD2E29B6564C00FA7FAD /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtension.swift; sourceTree = "<group>"; };
+		1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenshotTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +107,7 @@
 		1A71952F29B1004B00B19F88 = {
 			isa = PBXGroup;
 			children = (
+				1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */,
 				1A83CD1929B64FA800FA7FAD /* fastlane */,
 				1A83CD1A29B64FA800FA7FAD /* Gemfile */,
 				1A83CD1B29B64FA800FA7FAD /* Gemfile.lock */,

@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "FF58803C-8C46-4E47-A5F8-D3F0559AA02B",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:MyETA.xcodeproj",
+      "identifier" : "1A71953729B1004B00B19F88",
+      "name" : "MyETA"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:MyETA.xcodeproj",
+        "identifier" : "1A83CD2229B6559500FA7FAD",
+        "name" : "ScreenshotTests"
+      }
+    }
+  ],
+  "version" : 1
+}
