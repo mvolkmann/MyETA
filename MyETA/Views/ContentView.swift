@@ -12,23 +12,20 @@ struct ContentView: View {
             TabView(selection: $selection) {
                 SendScreen()
                     .tabItem {
-                        Label(
-                            "Send ETA",
-                            systemImage: "gear"
-                        )
+                        Label("Send ETA", systemImage: "gear")
+                            .accessibilityIdentifier("send-eta-tab")
                     }
                     .tag("Send")
                 PeopleScreen()
                     .tabItem {
                         Label("People", systemImage: "person.3")
+                            .accessibilityIdentifier("people-tab")
                     }
                     .tag("People")
                 PlacesScreen()
                     .tabItem {
-                        Label(
-                            "Places",
-                            systemImage: "building.2"
-                        )
+                        Label("Places", systemImage: "building.2")
+                            .accessibilityIdentifier("places-tab")
                     }
                     .tag("Places")
             }
