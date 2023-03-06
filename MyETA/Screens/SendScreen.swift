@@ -14,6 +14,8 @@ private class MessageComposerDelegate: NSObject,
 }
 
 struct SendScreen: View {
+    private static let mapMeters: CLLocationDistance = 1000
+
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject private var errorVM: ErrorViewModel
@@ -32,17 +34,15 @@ struct SendScreen: View {
     ) var places: FetchedResults<PlaceEntity>
 
     @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(
-            latitude: 38.7094263,
-            longitude: -90.5971701
-        ),
-        latitudinalMeters: 1000,
-        longitudinalMeters: 1000
+        center: CLLocationCoordinate2D(),
+        latitudinalMeters: Self.mapMeters,
+        longitudinalMeters: Self.mapMeters
     )
-
     @State private var processing = false
     @State private var selectedPersonId: UUID?
     @State private var selectedPlaceId: UUID?
+
+    private let locationVM = LocationViewModel.shared
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
@@ -124,6 +124,7 @@ struct SendScreen: View {
 
     private func refreshLocation() {
         print("\(#fileID) \(#function) entered")
+        locationVM.requestLocation()
     }
 
     var body: some View {
@@ -168,8 +169,11 @@ struct SendScreen: View {
                                 .imageScale(.large)
                         }
                     }
-                    Map(coordinateRegion: $region, showsUserLocation: true)
-                        .frame(width: 200, height: 200)
+                    Map(
+                        coordinateRegion: $region,
+                        showsUserLocation: true
+                    )
+                    .frame(width: 200, height: 200)
                 }
 
                 if processing {
@@ -187,6 +191,11 @@ struct SendScreen: View {
             .onAppear {
                 selectedPersonId = people.first?.id
                 selectedPlaceId = places.first?.id
+            }
+            .onChange(of: locationVM.location) { location in
+                if let location {
+                    region.center = location
+                }
             }
         }
     }
