@@ -59,6 +59,7 @@ struct PersonForm: View {
                 text: $cellNumber,
                 focusedPath: \Self.cellNumber
             )
+            .numbersOnly($cellNumber)
         }
         .textFieldStyle(.roundedBorder)
     }

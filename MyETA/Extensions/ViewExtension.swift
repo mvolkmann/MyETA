@@ -12,4 +12,11 @@ extension View {
             )
         }
     #endif
+
+    func numbersOnly(
+        _ text: Binding<String>,
+        float: Bool = false
+    ) -> some View {
+        modifier(NumbersOnlyViewModifier(text: text, float: float))
+    }
 }

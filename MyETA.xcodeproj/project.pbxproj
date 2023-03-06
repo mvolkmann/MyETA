@@ -30,6 +30,7 @@
 		1A83CD0F29B4E28B00FA7FAD /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */; };
 		1A83CD1129B4ED9200FA7FAD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */; };
 		1A83CD1629B573E200FA7FAD /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */; };
+		1A83CD1829B6481600FA7FAD /* NumbersOnlyViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewModel.swift; sourceTree = "<group>"; };
 		1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
+		1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersOnlyViewModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				1A71953D29B1004B00B19F88 /* ContentView.swift */,
 				1A71955629B1515F00B19F88 /* Info.swift */,
+				1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */,
 				1A71956029B1569C00B19F88 /* PersonForm.swift */,
 				1A71956429B1607500B19F88 /* PlaceForm.swift */,
 			);
@@ -252,6 +255,7 @@
 				1A71957429B273C500B19F88 /* DateExtension.swift in Sources */,
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A83CD0F29B4E28B00FA7FAD /* ErrorViewModel.swift in Sources */,
+				1A83CD1829B6481600FA7FAD /* NumbersOnlyViewModifier.swift in Sources */,
 				1A71957C29B2CCF500B19F88 /* Utilities.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */,
@@ -406,7 +410,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = r.mark.volkmann.gmail.com.MyETA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -436,7 +440,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = r.mark.volkmann.gmail.com.MyETA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
