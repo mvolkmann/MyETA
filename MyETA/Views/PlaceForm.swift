@@ -32,6 +32,71 @@ struct PlaceForm: View {
         "\(street), \(city), \(state), \(postalCode)"
     }
 
+    private var buttonsView: some View {
+        HStack {
+            let adding = place == nil
+            let word = adding ? "Add" : "Update"
+            Button("\(word) Place") {
+                if adding {
+                    place = PlaceEntity(context: moc)
+                }
+                if let place {
+                    place.name = name
+                    place.street = street
+                    place.city = city
+                    place.state = state
+                    place.country = country
+                        .isEmpty ? "USA" : country
+                    place.postalCode = postalCode
+                    place.id = UUID()
+                    save()
+                }
+                dismiss()
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!validPlace)
+
+            Button("Cancel") { dismiss() }
+                .buttonStyle(.bordered)
+        }
+    }
+
+    private var fieldsView: some View {
+        Group {
+            labeledTextField(
+                label: "Name",
+                text: $name,
+                focusedPath: \Self.name
+            )
+            labeledTextField(
+                label: "Street",
+                text: $street,
+                focusedPath: \Self.street
+            )
+            labeledTextField(
+                label: "City",
+                text: $city,
+                focusedPath: \Self.city
+            )
+            labeledTextField(
+                label: "State",
+                text: $state,
+                focusedPath: \Self.state
+            )
+            labeledTextField(
+                label: "Country",
+                text: $country,
+                focusedPath: \Self.country
+            )
+            labeledTextField(
+                label: "Postal Code",
+                text: $postalCode,
+                focusedPath: \Self.postalCode
+            )
+        }
+        .textFieldStyle(.roundedBorder)
+    }
+
     private func labeledTextField(
         label: String,
         text: Binding<String>,
@@ -89,71 +154,18 @@ struct PlaceForm: View {
                 Rectangle().fill(fill).ignoresSafeArea()
 
                 VStack {
-                    labeledTextField(
-                        label: "Name",
-                        text: $name,
-                        focusedPath: \Self.name
-                    )
-                    labeledTextField(
-                        label: "Street",
-                        text: $street,
-                        focusedPath: \Self.street
-                    )
-                    labeledTextField(
-                        label: "City",
-                        text: $city,
-                        focusedPath: \Self.city
-                    )
-                    labeledTextField(
-                        label: "State",
-                        text: $state,
-                        focusedPath: \Self.state
-                    )
-                    labeledTextField(
-                        label: "Country",
-                        text: $country,
-                        focusedPath: \Self.country
-                    )
-                    labeledTextField(
-                        label: "Postal Code",
-                        text: $postalCode,
-                        focusedPath: \Self.postalCode
-                    )
-
+                    fieldsView
+                    buttonsView
                     if validAddress && region.center.latitude != 0 {
-                        Map(coordinateRegion: $region, showsUserLocation: true)
-                            .frame(width: 200, height: 200)
+                        // TODO: Can this display a circle at the center coordinates?
+                        Map(coordinateRegion: $region)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .cornerRadius(10)
                     }
-
-                    HStack {
-                        let adding = place == nil
-                        let word = adding ? "Add" : "Update"
-                        Button("\(word) Place") {
-                            if adding {
-                                place = PlaceEntity(context: moc)
-                            }
-                            if let place {
-                                place.name = name
-                                place.street = street
-                                place.city = city
-                                place.state = state
-                                place.country = country
-                                    .isEmpty ? "USA" : country
-                                place.postalCode = postalCode
-                                place.id = UUID()
-                                save()
-                            }
-                            dismiss()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(!validPlace)
-
-                        Button("Cancel") { dismiss() }
-                            .buttonStyle(.bordered)
-                    }
+                    Spacer()
                 }
-                .textFieldStyle(.roundedBorder)
                 .padding()
+                .padding(.top)
                 .onAppear {
                     name = place?.name ?? ""
                     street = place?.street ?? ""
@@ -161,7 +173,6 @@ struct PlaceForm: View {
                     state = place?.state ?? ""
                     country = place?.country ?? ""
                     postalCode = place?.postalCode ?? ""
-
                     focus = \Self.name // initial focus
                 }
                 .onChange(of: addressString) { _ in

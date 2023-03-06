@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PersonForm: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject private var errorVM: ErrorViewModel
@@ -15,6 +16,52 @@ struct PersonForm: View {
     @Binding var person: PersonEntity?
 
     private let textFieldWidth: CGFloat = 250
+
+    private var buttonsView: some View {
+        HStack {
+            let adding = person == nil
+            let word = adding ? "Add" : "Update"
+            Button("\(word) Person") {
+                if adding {
+                    person = PersonEntity(context: moc)
+                }
+                if let person {
+                    person.firstName = firstName
+                    person.lastName = lastName
+                    person.cellNumber = cellNumber
+                    person.id = UUID()
+                    save()
+                }
+                dismiss()
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!valid)
+
+            Button("Cancel") { dismiss() }
+                .buttonStyle(.bordered)
+        }
+    }
+
+    private var fieldsView: some View {
+        Group {
+            labeledTextField(
+                label: "First Name",
+                text: $firstName,
+                focusedPath: \Self.firstName
+            )
+            labeledTextField(
+                label: "Last Name",
+                text: $lastName,
+                focusedPath: \Self.lastName
+            )
+            labeledTextField(
+                label: "Cell Number",
+                text: $cellNumber,
+                focusedPath: \Self.cellNumber
+            )
+        }
+        .textFieldStyle(.roundedBorder)
+    }
 
     private func labeledTextField(
         label: String,
@@ -58,59 +105,28 @@ struct PersonForm: View {
         // A NavigationView is required in order for
         // the keyboard toolbar button to appear and work.
         NavigationView {
-            VStack {
-                labeledTextField(
-                    label: "First Name",
-                    text: $firstName,
-                    focusedPath: \Self.firstName
-                )
-                labeledTextField(
-                    label: "Last Name",
-                    text: $lastName,
-                    focusedPath: \Self.lastName
-                )
-                labeledTextField(
-                    label: "Cell Number",
-                    text: $cellNumber,
-                    focusedPath: \Self.cellNumber
-                )
+            ZStack {
+                let fill = gradient(.orange, colorScheme: colorScheme)
+                Rectangle().fill(fill).ignoresSafeArea()
 
-                HStack {
-                    let adding = person == nil
-                    let word = adding ? "Add" : "Update"
-                    Button("\(word) Person") {
-                        if adding {
-                            person = PersonEntity(context: moc)
-                        }
-                        if let person {
-                            person.firstName = firstName
-                            person.lastName = lastName
-                            person.cellNumber = cellNumber
-                            person.id = UUID()
-                            save()
-                        }
-                        dismiss()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!valid)
-
-                    Button("Cancel") { dismiss() }
-                        .buttonStyle(.bordered)
+                VStack {
+                    fieldsView
+                    buttonsView
+                    Spacer()
                 }
-            }
-            .padding()
-            .onAppear {
-                firstName = person?.firstName ?? ""
-                lastName = person?.lastName ?? ""
-                cellNumber = person?.cellNumber ?? ""
-
-                focus = \Self.firstName // initial focus
-            }
-            .textFieldStyle(.roundedBorder)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Button(action: dismissKeyboard) {
-                        Image(systemName: "keyboard.chevron.compact.down")
+                .padding()
+                .padding(.top)
+                .onAppear {
+                    firstName = person?.firstName ?? ""
+                    lastName = person?.lastName ?? ""
+                    cellNumber = person?.cellNumber ?? ""
+                    focus = \Self.firstName // initial focus
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Button(action: dismissKeyboard) {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                        }
                     }
                 }
             }

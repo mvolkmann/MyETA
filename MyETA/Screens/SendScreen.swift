@@ -45,12 +45,11 @@ struct SendScreen: View {
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
-    @ViewBuilder
     private var buttonsView: some View {
-        if processing {
-            ProgressView().scaleEffect(1.5)
-        } else {
-            HStack {
+        HStack {
+            if processing {
+                ProgressView().scaleEffect(1.5)
+            } else {
                 if let eta {
                     Text("ETA: \(eta.time)")
                 } else {
@@ -65,6 +64,7 @@ struct SendScreen: View {
                     )
             }
         }
+        .frame(height: 40)
     }
 
     private func getETA() async throws {
@@ -103,7 +103,7 @@ struct SendScreen: View {
     }
 
     private var locationView: some View {
-        Group {
+        VStack {
             HStack {
                 Text("Your Location").font(.headline)
                 Button(action: refreshLocation) {
@@ -111,12 +111,9 @@ struct SendScreen: View {
                         .imageScale(.large)
                 }
             }
-            Map(
-                coordinateRegion: $region,
-                // TODO: Why does this seem to have no effect?
-                showsUserLocation: true
-            )
-            .frame(width: 200, height: 200)
+            Map(coordinateRegion: $region, showsUserLocation: true)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .cornerRadius(10)
         }
     }
 
@@ -125,7 +122,8 @@ struct SendScreen: View {
         if people.isEmpty {
             missingData("People")
         } else {
-            // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
+            // TODO: Why doesn't it work to make selection and the tag values
+            // TODO: have the type PersonEntity instead of UUID?
             Picker("Person", selection: $selectedPersonId) {
                 ForEach(people, id: \.id) { (person: PersonEntity) in
                     let firstName = person.firstName ?? ""
@@ -133,7 +131,8 @@ struct SendScreen: View {
                     Text("\(firstName) \(lastName)").tag(person)
                 }
             }
-            .border(.white)
+            .background(.white)
+            .cornerRadius(10)
         }
     }
 
@@ -142,13 +141,15 @@ struct SendScreen: View {
         if places.isEmpty {
             missingData("Places")
         } else {
-            // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
+            // TODO: Why doesn't it work to make selection and the tag values
+            // TODO: have the type PlaceEntity instead of UUID?
             Picker("Place", selection: $selectedPlaceId) {
                 ForEach(places) { place in
                     Text(place.name ?? "").tag(place)
                 }
             }
-            .border(.white)
+            .background(.white)
+            .cornerRadius(10)
         }
     }
 
@@ -227,6 +228,7 @@ struct SendScreen: View {
     }
 
     private func refreshLocation() {
+        print("\(#fileID) \(#function) entered")
         do {
             let location = try MapService.currentLocation()
             region.center = location.coordinate
@@ -254,11 +256,15 @@ struct SendScreen: View {
                 Spacer()
             }
             .padding()
-            .pickerStyle(.wheel)
+            .pickerStyle(.inline)
             .onAppear {
                 selectedPersonId = people.first?.id
                 selectedPlaceId = places.first?.id
-                refreshLocation()
+
+                // TODO: Why is this delay necessary?
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    refreshLocation()
+                }
             }
             .onChange(of: selectedPlace) { _ in
                 eta = nil
