@@ -55,9 +55,11 @@ struct PlaceForm: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(!validPlace)
+            .accessibilityIdentifier("add-button")
 
             Button("Cancel") { dismiss() }
                 .buttonStyle(.bordered)
+                .accessibilityIdentifier("cancel-button")
         }
     }
 
@@ -66,32 +68,38 @@ struct PlaceForm: View {
             labeledTextField(
                 label: "Name",
                 text: $name,
-                focusedPath: \Self.name
+                focusedPath: \Self.name,
+                identifier: "name-text-field"
             )
             labeledTextField(
                 label: "Street",
                 text: $street,
-                focusedPath: \Self.street
+                focusedPath: \Self.street,
+                identifier: "street-text-field"
             )
             labeledTextField(
                 label: "City",
                 text: $city,
-                focusedPath: \Self.city
+                focusedPath: \Self.city,
+                identifier: "city-text-field"
             )
             labeledTextField(
                 label: "State",
                 text: $state,
-                focusedPath: \Self.state
+                focusedPath: \Self.state,
+                identifier: "state-text-field"
             )
             labeledTextField(
                 label: "Country",
                 text: $country,
-                focusedPath: \Self.country
+                focusedPath: \Self.country,
+                identifier: "country-text-field"
             )
             labeledTextField(
                 label: "Postal Code",
                 text: $postalCode,
-                focusedPath: \Self.postalCode
+                focusedPath: \Self.postalCode,
+                identifier: "postal-code-text-field"
             )
         }
         .textFieldStyle(.roundedBorder)
@@ -100,13 +108,15 @@ struct PlaceForm: View {
     private func labeledTextField(
         label: String,
         text: Binding<String>,
-        focusedPath: KeyPath<PlaceForm, String>
+        focusedPath: KeyPath<PlaceForm, String>,
+        identifier: String
     ) -> some View {
         LabeledContent(label) {
             TextField("", text: text, onCommit: nextFocus)
                 .frame(width: textFieldWidth)
                 .focused($focus, equals: focusedPath)
                 .autocorrectionDisabled(true)
+                .accessibilityIdentifier(identifier)
         }
     }
 

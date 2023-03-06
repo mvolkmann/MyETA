@@ -233,10 +233,13 @@ struct SendScreen: View {
             let location = try MapService.currentLocation()
             region.center = location.coordinate
         } catch {
-            errorVM.alert(
-                error: error,
-                message: "Failed to get current location."
-            )
+            /*
+             errorVM.alert(
+                 error: error,
+                 message: "Failed to get current location."
+             )
+             */
+            Log.error(error)
         }
     }
 

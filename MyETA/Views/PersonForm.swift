@@ -36,9 +36,11 @@ struct PersonForm: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(!valid)
+            .accessibilityIdentifier("add-button")
 
             Button("Cancel") { dismiss() }
                 .buttonStyle(.bordered)
+                .accessibilityIdentifier("cancel-button")
         }
     }
 
@@ -47,17 +49,20 @@ struct PersonForm: View {
             labeledTextField(
                 label: "First Name",
                 text: $firstName,
-                focusedPath: \Self.firstName
+                focusedPath: \Self.firstName,
+                identifier: "first-name-text-field"
             )
             labeledTextField(
                 label: "Last Name",
                 text: $lastName,
-                focusedPath: \Self.lastName
+                focusedPath: \Self.lastName,
+                identifier: "last-name-text-field"
             )
             labeledTextField(
                 label: "Cell Number",
                 text: $cellNumber,
-                focusedPath: \Self.cellNumber
+                focusedPath: \Self.cellNumber,
+                identifier: "cell-number-text-field"
             )
             .numbersOnly($cellNumber)
         }
@@ -67,13 +72,15 @@ struct PersonForm: View {
     private func labeledTextField(
         label: String,
         text: Binding<String>,
-        focusedPath: KeyPath<PersonForm, String>
+        focusedPath: KeyPath<PersonForm, String>,
+        identifier: String
     ) -> some View {
         LabeledContent(label) {
             TextField("", text: text, onCommit: nextFocus)
                 .frame(width: textFieldWidth)
                 .focused($focus, equals: focusedPath)
                 .autocorrectionDisabled(true)
+                .accessibilityIdentifier(identifier)
         }
     }
 

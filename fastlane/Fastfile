@@ -18,6 +18,6 @@ default_platform(:ios)
 platform :ios do
   desc "Generates localized screenshots"
   lane :screenshots do
-    capture_screenshots(scheme: "{screenshot-scheme-name}")
+    capture_screenshots(scheme: "ScreenshotTests")
   end
 end

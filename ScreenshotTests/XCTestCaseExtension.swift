@@ -25,17 +25,17 @@ extension XCTestCase {
 
     // Enters text in a `TextField` with a given label.
     func enterText(label: String, text: String) {
-        Self.app.textFields[label].tap()
-        for char in text {
-            let key = Self.app.keys[String(char)]
-            key.tap()
-        }
-
-        /* Tests fail with this approach.
-         let field = Self.app.textFields[label]
-         field.tap()
-         field.typeText(text)
+        /* Can't type digits this way.
+         Self.app.textFields[label].tap()
+         for char in text {
+             let key = Self.app.keys[String(char)]
+             key.tap()
+         }
          */
+
+        let field = Self.app.textFields[label]
+        field.tap() // to get focus
+        field.typeText(text)
     }
 
     /*
