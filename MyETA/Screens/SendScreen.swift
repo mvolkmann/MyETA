@@ -33,6 +33,7 @@ struct SendScreen: View {
         ]
     ) var places: FetchedResults<PlaceEntity>
 
+    @State private var eta: Date?
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(),
         latitudinalMeters: Self.mapMeters,
@@ -44,21 +45,126 @@ struct SendScreen: View {
 
     private let messageComposeDelegate = MessageComposerDelegate()
 
-    private func getMessage() async throws -> String {
-        guard let person = selectedPerson else { return "" }
-        guard let place = selectedPlace else { return "" }
+    @ViewBuilder
+    private var buttonsView: some View {
+        if processing {
+            ProgressView().scaleEffect(1.5)
+        } else {
+            HStack {
+                if let eta {
+                    Text("ETA: \(eta.time)")
+                } else {
+                    Button("Show ETA", action: presentETA)
+                        .buttonStyle(.bordered)
+                        .disabled(selectedPlace == nil)
+                }
+                Button("Send ETA", action: presentMessageCompose)
+                    .buttonStyle(.bordered)
+                    .disabled(
+                        selectedPerson == nil || selectedPlace == nil
+                    )
+            }
+        }
+    }
 
-        guard let placemark = try await MapService.getPlacemark(from: place)
-        else {
+    private func getETA() async throws {
+        guard let place = selectedPlace else {
+            throw "A place must be selected."
+        }
+        guard let placemark =
+            try await MapService.getPlacemark(from: place) else {
             throw "No placemark found for place."
         }
 
         let seconds = try await MapService.travelTime(to: placemark)
-        let eta = Date.now.addingTimeInterval(seconds)
+        eta = Date.now.addingTimeInterval(seconds)
+    }
 
-        let firstName = person.firstName ?? ""
-        let name = place.name ?? ""
-        return "\(firstName), I will arrive at \(name) around \(eta.time)."
+    private func getMessage() async throws -> String {
+        guard let person = selectedPerson else {
+            throw "A person must be selected."
+        }
+        /*
+         guard let place = selectedPlace else { return "" }
+
+         guard let placemark = try await MapService.getPlacemark(from: place)
+         else {
+             throw "No placemark found for place."
+         }
+
+         let seconds = try await MapService.travelTime(to: placemark)
+         let eta = Date.now.addingTimeInterval(seconds)
+         */
+        let firstName = person.firstName ?? "unknown"
+        try await getETA()
+        let time = eta?.time ?? "unknown"
+        let name = selectedPlace?.name ?? ""
+        return "\(firstName), I will arrive at \(name) around \(time)."
+    }
+
+    private var locationView: some View {
+        Group {
+            HStack {
+                Text("Your Location").font(.headline)
+                Button(action: refreshLocation) {
+                    Image(systemName: "arrow.clockwise")
+                        .imageScale(.large)
+                }
+            }
+            Map(
+                coordinateRegion: $region,
+                // TODO: Why does this seem to have no effect?
+                showsUserLocation: true
+            )
+            .frame(width: 200, height: 200)
+        }
+    }
+
+    @ViewBuilder
+    private var peopleView: some View {
+        if people.isEmpty {
+            missingData("People")
+        } else {
+            // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
+            Picker("Person", selection: $selectedPersonId) {
+                ForEach(people, id: \.id) { (person: PersonEntity) in
+                    let firstName = person.firstName ?? ""
+                    let lastName = person.lastName ?? ""
+                    Text("\(firstName) \(lastName)").tag(person)
+                }
+            }
+            .border(.white)
+        }
+    }
+
+    @ViewBuilder
+    private var placesView: some View {
+        if places.isEmpty {
+            missingData("Places")
+        } else {
+            // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
+            Picker("Place", selection: $selectedPlaceId) {
+                ForEach(places) { place in
+                    Text(place.name ?? "").tag(place)
+                }
+            }
+            .border(.white)
+        }
+    }
+
+    private func presentETA() {
+        Task {
+            do {
+                processing = true
+                try await getETA()
+                processing = false
+            } catch {
+                errorVM.alert(
+                    error: error,
+                    message: "Failed to get ETA."
+                )
+            }
+        }
     }
 
     private func presentMessageCompose() {
@@ -139,56 +245,12 @@ struct SendScreen: View {
 
             VStack {
                 Spacer()
-
-                if people.isEmpty {
-                    missingData("People")
-                } else {
-                    // TODO: Why doesn't it work to make selection and the tag values be PersonEntity instead of UUID?
-                    Picker("Person", selection: $selectedPersonId) {
-                        ForEach(people, id: \.id) { (person: PersonEntity) in
-                            let firstName = person.firstName ?? ""
-                            let lastName = person.lastName ?? ""
-                            Text("\(firstName) \(lastName)").tag(person)
-                        }
-                    }
-                    .border(.white)
+                peopleView
+                placesView
+                if !people.isEmpty, !places.isEmpty {
+                    buttonsView
                 }
-
-                if places.isEmpty {
-                    missingData("Places")
-                } else {
-                    // TODO: Why doesn't it work to make selection and the tag values be PlaceEntity instead of UUID?
-                    Picker("Place", selection: $selectedPlaceId) {
-                        ForEach(places) { place in
-                            Text(place.name ?? "").tag(place)
-                        }
-                    }
-                    .border(.white)
-                }
-
-                if selectedPersonId != nil, selectedPlaceId != nil {
-                    HStack {
-                        Text("Your Location").font(.headline)
-                        Button(action: refreshLocation) {
-                            Image(systemName: "arrow.clockwise")
-                                .imageScale(.large)
-                        }
-                    }
-                    Map(
-                        coordinateRegion: $region,
-                        showsUserLocation: true
-                    )
-                    .frame(width: 200, height: 200)
-                }
-
-                if processing {
-                    ProgressView()
-                } else if !people.isEmpty, !places.isEmpty {
-                    Button("Send ETA", action: presentMessageCompose)
-                        .buttonStyle(.borderedProminent)
-                        .disabled(selectedPerson == nil || selectedPlace == nil)
-                }
-
+                locationView
                 Spacer()
             }
             .padding()
@@ -197,6 +259,9 @@ struct SendScreen: View {
                 selectedPersonId = people.first?.id
                 selectedPlaceId = places.first?.id
                 refreshLocation()
+            }
+            .onChange(of: selectedPlace) { _ in
+                eta = nil
             }
         }
     }
