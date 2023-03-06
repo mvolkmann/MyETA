@@ -122,6 +122,10 @@ struct SendScreen: View {
             .padding(.bottom)
     }
 
+    private func refreshLocation() {
+        print("\(#fileID) \(#function) entered")
+    }
+
     var body: some View {
         ZStack {
             let fill = gradient(colorScheme: colorScheme)
@@ -157,11 +161,15 @@ struct SendScreen: View {
                 }
 
                 if selectedPersonId != nil, selectedPlaceId != nil {
-                    VStack(spacing: 0) {
-                        Text("Your Current Location").font(.headline)
-                        Map(coordinateRegion: $region, showsUserLocation: true)
-                            .frame(width: 200, height: 200)
+                    HStack {
+                        Text("Your Location").font(.headline)
+                        Button(action: refreshLocation) {
+                            Image(systemName: "arrow.clockwise")
+                                .imageScale(.large)
+                        }
                     }
+                    Map(coordinateRegion: $region, showsUserLocation: true)
+                        .frame(width: 200, height: 200)
                 }
 
                 if processing {
