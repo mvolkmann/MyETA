@@ -167,10 +167,15 @@ struct PlaceForm: View {
                     fieldsView
                     buttonsView
                     if validAddress && region.center.latitude != 0 {
-                        // TODO: Can this display a circle at the center coordinates?
-                        Map(coordinateRegion: $region)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .cornerRadius(10)
+                        let pin = IdentifiableLocation(location: region.center)
+                        Map(
+                            coordinateRegion: $region,
+                            annotationItems: [pin]
+                        ) { place in
+                            MapMarker(coordinate: place.location, tint: .red)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .cornerRadius(10)
                     }
                     Spacer()
                 }

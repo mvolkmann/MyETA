@@ -38,6 +38,7 @@
 		1A83CD2F29B6564C00FA7FAD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD2E29B6564C00FA7FAD /* SnapshotHelper.swift */; };
 		1A83CD3129B6582E00FA7FAD /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */; };
 		1A83CD3429B67D8A00FA7FAD /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */; };
+		1A83CD3629B689A100FA7FAD /* IdentifiableLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3529B689A100FA7FAD /* IdentifiableLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtension.swift; sourceTree = "<group>"; };
 		1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenshotTests.xctestplan; sourceTree = "<group>"; };
 		1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		1A83CD3529B689A100FA7FAD /* IdentifiableLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				1A71957629B28BC100B19F88 /* Model.xcdatamodeld */,
 				1A71955B29B152FA00B19F88 /* Person.swift */,
 				1A71955D29B1532700B19F88 /* Place.swift */,
+				1A83CD3529B689A100FA7FAD /* IdentifiableLocation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */,
 				1A71953E29B1004B00B19F88 /* ContentView.swift in Sources */,
 				1A71954F29B1500900B19F88 /* PlacesScreen.swift in Sources */,
+				1A83CD3629B689A100FA7FAD /* IdentifiableLocation.swift in Sources */,
 				1A71955329B150ED00B19F88 /* AppInfo.swift in Sources */,
 				1A71953C29B1004B00B19F88 /* MyETAApp.swift in Sources */,
 				1A83CD1129B4ED9200FA7FAD /* ViewExtension.swift in Sources */,
