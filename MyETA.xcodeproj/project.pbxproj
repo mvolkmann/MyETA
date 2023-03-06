@@ -31,6 +31,9 @@
 		1A83CD1129B4ED9200FA7FAD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */; };
 		1A83CD1629B573E200FA7FAD /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */; };
 		1A83CD1829B6481600FA7FAD /* NumbersOnlyViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */; };
+		1A83CD1C29B64FA800FA7FAD /* fastlane in Resources */ = {isa = PBXBuildFile; fileRef = 1A83CD1929B64FA800FA7FAD /* fastlane */; };
+		1A83CD1D29B64FA800FA7FAD /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = 1A83CD1A29B64FA800FA7FAD /* Gemfile */; };
+		1A83CD1E29B64FA800FA7FAD /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = 1A83CD1B29B64FA800FA7FAD /* Gemfile.lock */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +63,9 @@
 		1A83CD1029B4ED9200FA7FAD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		1A83CD1529B573E200FA7FAD /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersOnlyViewModifier.swift; sourceTree = "<group>"; };
+		1A83CD1929B64FA800FA7FAD /* fastlane */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fastlane; sourceTree = "<group>"; };
+		1A83CD1A29B64FA800FA7FAD /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
+		1A83CD1B29B64FA800FA7FAD /* Gemfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gemfile.lock; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +82,9 @@
 		1A71952F29B1004B00B19F88 = {
 			isa = PBXGroup;
 			children = (
+				1A83CD1929B64FA800FA7FAD /* fastlane */,
+				1A83CD1A29B64FA800FA7FAD /* Gemfile */,
+				1A83CD1B29B64FA800FA7FAD /* Gemfile.lock */,
 				1A71953A29B1004B00B19F88 /* MyETA */,
 				1A71953929B1004B00B19F88 /* Products */,
 			);
@@ -235,6 +244,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A83CD1E29B64FA800FA7FAD /* Gemfile.lock in Resources */,
+				1A83CD1D29B64FA800FA7FAD /* Gemfile in Resources */,
+				1A83CD1C29B64FA800FA7FAD /* fastlane in Resources */,
 				1A71954329B1004C00B19F88 /* Preview Assets.xcassets in Resources */,
 				1A71954029B1004C00B19F88 /* Assets.xcassets in Resources */,
 			);
