@@ -187,11 +187,6 @@ struct PlaceForm: View {
                 }
                 .onChange(of: addressString) { _ in
                     guard validAddress else { return }
-
-                    print(
-                        "\(#fileID) \(#function) addressString =",
-                        addressString
-                    )
                     Task {
                         placemark = try? await MapService.getPlacemark(
                             from: addressString

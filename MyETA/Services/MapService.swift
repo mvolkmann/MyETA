@@ -53,20 +53,11 @@ struct MapService {
         }
     }
 
-    // TODO: Will this get a new current location every time this is called?
-    static func currentLocation() throws -> CLLocation {
-        let locationManager = CLLocationManager()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.requestWhenInUseAuthorization()
-        guard let location = locationManager.location else {
-            throw "failed to get current location"
-        }
-        return location
-    }
-
-    static func travelTime(to: CLPlacemark) async throws -> TimeInterval {
-        let fromLocation = try currentLocation()
+    static func travelTime(
+        from: CLLocationCoordinate2D,
+        to: CLPlacemark
+    ) async throws -> TimeInterval {
+        // let fromLocation = try currentLocation()
 
         // Get the destination placemark.
         guard let toLocation = to.location else {
@@ -82,7 +73,7 @@ struct MapService {
 
         let request = MKDirections.Request()
         request.source = MKMapItem(
-            placemark: MKPlacemark(coordinate: fromLocation.coordinate)
+            placemark: MKPlacemark(coordinate: from)
         )
         request.destination = MKMapItem(
             placemark: MKPlacemark(placemark: endCLPlacemark)

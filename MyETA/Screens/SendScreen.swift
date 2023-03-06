@@ -43,6 +43,8 @@ struct SendScreen: View {
     @State private var selectedPersonId: UUID?
     @State private var selectedPlaceId: UUID?
 
+    @StateObject var locationVM = LocationViewModel()
+
     private let messageComposeDelegate = MessageComposerDelegate()
 
     private var buttonsView: some View {
@@ -76,7 +78,17 @@ struct SendScreen: View {
             throw "No placemark found for place."
         }
 
-        let seconds = try await MapService.travelTime(to: placemark)
+        guard let from = locationVM.location else {
+            errorVM.alert(
+                message: "Failed to curent location."
+            )
+            return
+        }
+
+        let seconds = try await MapService.travelTime(
+            from: from,
+            to: placemark
+        )
         eta = Date.now.addingTimeInterval(seconds)
     }
 
@@ -84,17 +96,6 @@ struct SendScreen: View {
         guard let person = selectedPerson else {
             throw "A person must be selected."
         }
-        /*
-         guard let place = selectedPlace else { return "" }
-
-         guard let placemark = try await MapService.getPlacemark(from: place)
-         else {
-             throw "No placemark found for place."
-         }
-
-         let seconds = try await MapService.travelTime(to: placemark)
-         let eta = Date.now.addingTimeInterval(seconds)
-         */
         let firstName = person.firstName ?? "unknown"
         try await getETA()
         let time = eta?.time ?? "unknown"
@@ -228,19 +229,7 @@ struct SendScreen: View {
     }
 
     private func refreshLocation() {
-        print("\(#fileID) \(#function) entered")
-        do {
-            let location = try MapService.currentLocation()
-            region.center = location.coordinate
-        } catch {
-            /*
-             errorVM.alert(
-                 error: error,
-                 message: "Failed to get current location."
-             )
-             */
-            Log.error(error)
-        }
+        locationVM.requestLocation()
     }
 
     var body: some View {
@@ -271,6 +260,9 @@ struct SendScreen: View {
             }
             .onChange(of: selectedPlace) { _ in
                 eta = nil
+            }
+            .onChange(of: locationVM.location) { location in
+                if let location { region.center = location }
             }
         }
     }

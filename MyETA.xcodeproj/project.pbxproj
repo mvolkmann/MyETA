@@ -37,6 +37,7 @@
 		1A83CD2629B6559500FA7FAD /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD2529B6559500FA7FAD /* ScreenshotTests.swift */; };
 		1A83CD2F29B6564C00FA7FAD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD2E29B6564C00FA7FAD /* SnapshotHelper.swift */; };
 		1A83CD3129B6582E00FA7FAD /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */; };
+		1A83CD3429B67D8A00FA7FAD /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		1A83CD2E29B6564C00FA7FAD /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtension.swift; sourceTree = "<group>"; };
 		1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenshotTests.xctestplan; sourceTree = "<group>"; };
+		1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,10 +109,10 @@
 		1A71952F29B1004B00B19F88 = {
 			isa = PBXGroup;
 			children = (
-				1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */,
 				1A83CD1929B64FA800FA7FAD /* fastlane */,
 				1A83CD1A29B64FA800FA7FAD /* Gemfile */,
 				1A83CD1B29B64FA800FA7FAD /* Gemfile.lock */,
+				1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */,
 				1A71953A29B1004B00B19F88 /* MyETA */,
 				1A83CD2429B6559500FA7FAD /* ScreenshotTests */,
 				1A71953929B1004B00B19F88 /* Products */,
@@ -199,9 +201,9 @@
 			isa = PBXGroup;
 			children = (
 				1A71955229B150ED00B19F88 /* AppInfo.swift */,
-				1A71957029B25B8300B19F88 /* MapService.swift */,
-				1A71955829B1518A00B19F88 /* Log.swift */,
 				1A71957929B2926C00B19F88 /* DataController.swift */,
+				1A71955829B1518A00B19F88 /* Log.swift */,
+				1A71957029B25B8300B19F88 /* MapService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				1A83CD0E29B4E28B00FA7FAD /* ErrorViewModel.swift */,
+				1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 				1A71955C29B152FA00B19F88 /* Person.swift in Sources */,
 				1A71955129B1502300B19F88 /* SendScreen.swift in Sources */,
 				1A71956129B1569C00B19F88 /* PersonForm.swift in Sources */,
+				1A83CD3429B67D8A00FA7FAD /* LocationViewModel.swift in Sources */,
 				1A83CD1629B573E200FA7FAD /* CLLocationCoordinate2D.swift in Sources */,
 				1A71955729B1515F00B19F88 /* Info.swift in Sources */,
 				1A71957429B273C500B19F88 /* DateExtension.swift in Sources */,
@@ -554,6 +558,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4BG3523GAZ;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need to display your current location in a map.";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = r.mark.volkmann.gmail.com.ScreenshotTests;
@@ -572,6 +577,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4BG3523GAZ;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need to display your current location in a map.";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = r.mark.volkmann.gmail.com.ScreenshotTests;
