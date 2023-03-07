@@ -67,10 +67,7 @@ struct PersonForm: View {
         // Get the phone number from this object.
         if let phone { cellNumber = phone.value.stringValue }
 
-        focus = \Self.firstName
-
-        // TODO: Why are taps on the Add button ignored after this
-        // TODO: unless you tap it many times or
+        // TODO: Why are taps on the Add button ignored after this unless you
         // TODO: move focus to another TextField before tapping it?
     }
 
@@ -152,7 +149,7 @@ struct PersonForm: View {
                     Button("Find in Contacts") {
                         isFindingContact = true
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
 
                     buttonsView
 

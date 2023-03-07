@@ -85,10 +85,7 @@ struct PlaceForm: View {
         country = address.country
         postalCode = address.postalCode
 
-        focus = \Self.name
-
-        // TODO: Why are taps on the Add button ignored after this
-        // TODO: unless you tap it many times or
+        // TODO: Why are taps on the Add button ignored after this unless you
         // TODO: move focus to another TextField before tapping it?
     }
 
@@ -207,7 +204,7 @@ struct PlaceForm: View {
                     Button("Find in Contacts") {
                         isFindingContact = true
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
 
                     buttonsView
 
