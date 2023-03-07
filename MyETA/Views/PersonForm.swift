@@ -49,6 +49,31 @@ struct PersonForm: View {
         }
     }
 
+    private func changeContact(_ contact: CNContact?) {
+        guard let contact else { return }
+
+        firstName = contact.givenName
+        lastName = contact.familyName
+
+        // Find the first "Mobile" phone number.
+        var phone = contact.phoneNumbers.first { phoneNumber in
+            guard let label = phoneNumber.label else { return false }
+            return label.contains("Mobile")
+        }
+
+        // If none was found, just use the first phone number.
+        if phone == nil { phone = contact.phoneNumbers.first }
+
+        // Get the phone number from this object.
+        if let phone { cellNumber = phone.value.stringValue }
+
+        focus = \Self.firstName
+
+        // TODO: Why are taps on the Add button ignored after this
+        // TODO: unless you tap it many times or
+        // TODO: move focus to another TextField before tapping it?
+    }
+
     private var fieldsView: some View {
         Group {
             labeledTextField(
@@ -150,29 +175,7 @@ struct PersonForm: View {
                 }
             }
         }
-        .onChange(of: contact) { _ in
-            guard let contact else { return }
-            firstName = contact.givenName
-            lastName = contact.familyName
-
-            // Find the first "Mobile" phone number.
-            var phone = contact.phoneNumbers.first { phoneNumber in
-                guard let label = phoneNumber.label else { return false }
-                return label.contains("Mobile")
-            }
-
-            // If none was found, just use the first phone number.
-            if phone == nil { phone = contact.phoneNumbers.first }
-
-            // Get the phone number from this object.
-            if let phone { cellNumber = phone.value.stringValue }
-
-            focus = \Self.firstName
-
-            // TODO: Why are taps on the Add button ignored after this
-            // TODO: unless you tap it many times or
-            // TODO: move focus to another TextField before tapping it?
-        }
+        .onChange(of: contact, perform: changeContact)
         .sheet(isPresented: $isFindingContact) {
             ContactPicker(contact: $contact)
         }

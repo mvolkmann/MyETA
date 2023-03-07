@@ -66,6 +66,32 @@ struct PlaceForm: View {
         }
     }
 
+    private func changeContact(_ contact: CNContact?) {
+        guard let contact else { return }
+
+        guard let postalAddress = contact.postalAddresses.first
+        else { return }
+
+        if contact.givenName.isEmpty {
+            name = contact.organizationName
+        } else {
+            name = "\(contact.givenName) \(contact.familyName)"
+        }
+
+        let address = postalAddress.value
+        street = address.street
+        city = address.city
+        state = address.state
+        country = address.country
+        postalCode = address.postalCode
+
+        focus = \Self.name
+
+        // TODO: Why are taps on the Add button ignored after this
+        // TODO: unless you tap it many times or
+        // TODO: move focus to another TextField before tapping it?
+    }
+
     private var fieldsView: some View {
         Group {
             labeledTextField(
@@ -222,31 +248,7 @@ struct PlaceForm: View {
                 }
             }
         }
-        .onChange(of: contact) { _ in
-            guard let contact else { return }
-            print("contact =", contact)
-            guard let postalAddress = contact.postalAddresses.first
-            else { return }
-
-            if contact.givenName.isEmpty {
-                name = contact.organizationName
-            } else {
-                name = "\(contact.givenName) \(contact.familyName)"
-            }
-
-            let address = postalAddress.value
-            street = address.street
-            city = address.city
-            state = address.state
-            country = address.country
-            postalCode = address.postalCode
-
-            focus = \Self.name
-
-            // TODO: Why are taps on the Add button ignored after this
-            // TODO: unless you tap it many times or
-            // TODO: move focus to another TextField before tapping it?
-        }
+        .onChange(of: contact, perform: changeContact)
         .sheet(isPresented: $isFindingContact) {
             ContactPicker(contact: $contact)
         }

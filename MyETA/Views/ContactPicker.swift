@@ -15,6 +15,8 @@ struct ContactPicker: UIViewControllerRepresentable {
         ) {
             // picker.dismiss(animated: true) // seems not needed
             parent.contact = contact
+            // TODO: This doesn't seem to fix the focus issue.
+            picker.restoresFocusAfterTransition = true
         }
     }
 
