@@ -3,105 +3,41 @@ import SwiftUI
 
 struct ContactPicker: UIViewControllerRepresentable {
     class Coordinator: NSObject, CNContactPickerDelegate {
-        @Binding private var contact: CNContact?
-        private var onCancel: () -> Void
-        private var picker = CNContactPickerViewController()
-        private var viewController: UIViewController = .init()
+        private var parent: ContactPicker
 
-        init(
-            contact: Binding<CNContact?>,
-            onCancel: @escaping () -> Void
-        ) {
-            _contact = contact
-            self.onCancel = onCancel
-            super.init()
-
-            let button = Button("Find Contact", action: showContactPicker)
-
-            let hostingController: UIHostingController<Button> =
-                UIHostingController(rootView: button)
-
-            hostingController.view?.sizeToFit()
-
-            (hostingController.view?.frame).map {
-                hostingController.view!.widthAnchor
-                    .constraint(equalToConstant: $0.width).isActive = true
-                hostingController.view!.heightAnchor
-                    .constraint(equalToConstant: $0.height).isActive = true
-                viewController.preferredContentSize = $0.size
-            }
-
-            hostingController.willMove(toParent: viewController)
-            viewController.addChild(hostingController)
-            viewController.view.addSubview(hostingController.view)
-
-            hostingController.view.anchor(to: viewController.view)
-
-            picker.delegate = self
+        init(_ parent: ContactPicker) {
+            self.parent = parent
         }
 
         func contactPicker(
             _ picker: CNContactPickerViewController,
             didSelect contact: CNContact
         ) {
-            self.contact = contact
+            // picker.dismiss(animated: true) // seems not needed
+            parent.contact = contact
         }
-
-        func contactPickerDidCancel(_: CNContactPickerViewController) {
-            onCancel()
-        }
-
-        func makeUIViewController() -> UIViewController {
-            return viewController
-        }
-
-        func showContactPicker() {
-            viewController.present(picker, animated: true)
-        }
-
-        func updateUIViewController(
-            _ uiViewController: UIViewController,
-            context: UIViewControllerRepresentableContext<ContactPicker>
-        ) {}
     }
 
     @Binding private var contact: CNContact?
-    private var onCancel: () -> Void
 
-    init(
-        contact: Binding<CNContact?>,
-        onCancel: @escaping () -> Void = {}
-    ) {
+    init(contact: Binding<CNContact?>) {
         _contact = contact
-        self.onCancel = onCancel
     }
 
     func makeCoordinator() -> Coordinator {
-        .init(contact: $contact, onCancel: onCancel)
+        Coordinator(self)
     }
 
-    func makeUIViewController(context: Context) -> UIViewController {
-        context.coordinator.makeUIViewController()
+    func makeUIViewController(context: Context)
+        -> CNContactPickerViewController {
+        let vc = CNContactPickerViewController()
+        vc.delegate = context.coordinator
+        return vc
     }
 
+    // This method is required, but in this case it doesn't need to anything.
     func updateUIViewController(
-        _ uiViewController: UIViewController,
+        _ uiViewController: CNContactPickerViewController,
         context: Context
-    ) {
-        context.coordinator.updateUIViewController(
-            uiViewController,
-            context: context
-        )
-    }
-}
-
-private extension UIView {
-    func anchor(to other: UIView) {
-        translatesAutoresizingMaskIntoConstraints = false
-
-        topAnchor.constraint(equalTo: other.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: other.bottomAnchor).isActive = true
-        leadingAnchor.constraint(equalTo: other.leadingAnchor).isActive = true
-        trailingAnchor.constraint(equalTo: other.trailingAnchor).isActive = true
-    }
+    ) {}
 }
