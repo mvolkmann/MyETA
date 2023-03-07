@@ -17,7 +17,7 @@ final class ScreenshotTests: XCTestCase {
 
     override func tearDownWithError() throws {}
 
-    func addPerson() {
+    func addPerson() throws {
         tapTabBarButton(label: "people-tab", wait: waitSeconds)
 
         // Delete existing person.
@@ -29,13 +29,17 @@ final class ScreenshotTests: XCTestCase {
         }
 
         tapButton(label: "add-person-button")
+        try textExists("First Name", wait: waitSeconds)
         enterText(label: "first-name-text-field", text: firstName)
         enterText(label: "last-name-text-field", text: lastName)
         enterText(label: "cell-number-text-field", text: "1234567890")
+
+        snapshot("3-person-sheet")
+
         tapButton(label: "add-button")
     }
 
-    func addPlace() {
+    func addPlace() throws {
         tapTabBarButton(label: "places-tab", wait: waitSeconds)
 
         // Delete existing place.
@@ -55,6 +59,9 @@ final class ScreenshotTests: XCTestCase {
         enterText(label: "state-text-field", text: "MO")
         enterText(label: "country-text-field", text: "USA")
         enterText(label: "postal-code-text-field", text: "63141")
+
+        snapshot("5-place-sheet")
+
         tapButton(label: "add-button")
     }
 
@@ -62,22 +69,6 @@ final class ScreenshotTests: XCTestCase {
         tapTabBarButton(label: "people-tab", wait: waitSeconds)
         try textExists("People", wait: waitSeconds)
         snapshot("2-people")
-    }
-
-    func personSheet() throws {
-        tapTabBarButton(label: "people-tab", wait: waitSeconds)
-        tapButton(label: "add-person-button")
-        try textExists("First Name", wait: waitSeconds)
-        snapshot("3-person-sheet")
-        tapButton(label: "cancel-button")
-    }
-
-    func placeSheet() throws {
-        tapTabBarButton(label: "places-tab", wait: waitSeconds)
-        tapButton(label: "add-place-button")
-        try textExists("Postal Code", wait: waitSeconds)
-        snapshot("5-place-sheet")
-        tapButton(label: "cancel-button")
     }
 
     func placesScreen() throws {
@@ -93,12 +84,11 @@ final class ScreenshotTests: XCTestCase {
     }
 
     func testScreenshots() throws {
-        addPerson()
-        addPlace()
+        // XCTAssertEqual(2, 2)
+        try addPerson()
+        try addPlace()
         try sendETAScreen()
         try peopleScreen()
-        try personSheet()
         try placesScreen()
-        try placeSheet()
     }
 }

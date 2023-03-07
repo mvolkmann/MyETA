@@ -10,14 +10,25 @@ class LocationViewModel: NSObject, CLLocationManagerDelegate, ObservableObject {
     override init() {
         super.init()
 
-        manager.delegate = self
-
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.distanceFilter = kCLDistanceFilterNone
-        manager.requestWhenInUseAuthorization()
+        manager.delegate = self
     }
 
     func requestLocation() {
+        // 0 = notDetermined
+        // 1 = restricted
+        // 2 = denied
+        // 3 = authorizedAlways
+        // 4 = authorizedWhenInUse
+        let status = manager.authorizationStatus
+        print("\(#fileID) \(#function) status =", status.rawValue)
+
+        if status == .notDetermined {
+            print("\(#fileID) \(#function) requesting authorization")
+            manager.requestWhenInUseAuthorization()
+        }
+
         manager.requestLocation()
     }
 

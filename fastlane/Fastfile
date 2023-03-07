@@ -16,8 +16,24 @@
 default_platform(:ios)
 
 platform :ios do
+  desc "Run tests"
+  lane :tests do
+    run_tests(
+      scheme: "ScreenshotTests",
+      devices: ['iPhone 13 Pro Max']
+    )
+  end
+
   desc "Generates localized screenshots"
   lane :screenshots do
     capture_screenshots(scheme: "ScreenshotTests")
+  end
+
+  lane :upload_screenshots do
+    upload_to_app_store(
+      skip_app_version_update: true,
+      skip_binary_upload: true,
+      skip_metadata: true
+    )
   end
 end
