@@ -1,30 +1,25 @@
-import Contacts
 import ContactsUI
 import SwiftUI
 
-struct ContactPicker<Label: View>: UIViewControllerRepresentable {
+struct ContactPicker: UIViewControllerRepresentable {
     class Coordinator: NSObject, CNContactPickerDelegate {
-        var onCancel: () -> Void
-        var viewController: UIViewController = .init()
-        var picker = CNContactPickerViewController()
+        private var onCancel: () -> Void
+        private var picker = CNContactPickerViewController()
+        private var viewController: UIViewController = .init()
 
-        @Binding var contact: CNContact?
+        @Binding private var contact: CNContact?
 
-        // Possible take a binding
-        init<Label: View>(
+        init(
             contact: Binding<CNContact?>,
-            onCancel: @escaping () -> Void,
-            @ViewBuilder content: @escaping () -> Label
+            onCancel: @escaping () -> Void
         ) {
             _contact = contact
             self.onCancel = onCancel
             super.init()
-            let button = Button<Label>(
-                action: showContactPicker,
-                label: content
-            )
 
-            let hostingController: UIHostingController<Button<Label>> =
+            let button = Button("Find Contact", action: showContactPicker)
+
+            let hostingController: UIHostingController<Button> =
                 UIHostingController(rootView: button)
 
             hostingController.view?.sizeToFit()
@@ -73,23 +68,18 @@ struct ContactPicker<Label: View>: UIViewControllerRepresentable {
 
     @Binding var contact: CNContact?
 
-    @ViewBuilder
-    var content: () -> Label
-
     var onCancel: () -> Void
 
     init(
         contact: Binding<CNContact?>,
-        onCancel: @escaping () -> Void = {},
-        @ViewBuilder content: @escaping () -> Label
+        onCancel: @escaping () -> Void = {}
     ) {
         _contact = contact
         self.onCancel = onCancel
-        self.content = content
     }
 
     func makeCoordinator() -> Coordinator {
-        .init(contact: $contact, onCancel: onCancel, content: content)
+        .init(contact: $contact, onCancel: onCancel)
     }
 
     func makeUIViewController(context: Context) -> UIViewController {

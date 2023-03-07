@@ -121,13 +121,7 @@ struct PersonForm: View {
                 VStack {
                     fieldsView
 
-                    ContactPicker(contact: $contact) {
-                        Label(
-                            "Select Contact",
-                            systemImage: "person.crop.circle.fill"
-                        )
-                        .fixedSize()
-                    }
+                    ContactPicker(contact: $contact)
                     if let contact {
                         let fullName =
                             "\(contact.givenName) \(contact.familyName)"
