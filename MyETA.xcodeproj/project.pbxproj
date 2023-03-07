@@ -39,6 +39,7 @@
 		1A83CD3129B6582E00FA7FAD /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3029B6582E00FA7FAD /* XCTestCaseExtension.swift */; };
 		1A83CD3429B67D8A00FA7FAD /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */; };
 		1A83CD3629B689A100FA7FAD /* IdentifiableLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3529B689A100FA7FAD /* IdentifiableLocation.swift */; };
+		1A83CD3829B7B87100FA7FAD /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83CD3729B7B87100FA7FAD /* ContactPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		1A83CD3229B673A400FA7FAD /* ScreenshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenshotTests.xctestplan; sourceTree = "<group>"; };
 		1A83CD3329B67D8A00FA7FAD /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		1A83CD3529B689A100FA7FAD /* IdentifiableLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableLocation.swift; sourceTree = "<group>"; };
+		1A83CD3729B7B87100FA7FAD /* ContactPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 				1A83CD1729B6481600FA7FAD /* NumbersOnlyViewModifier.swift */,
 				1A71956029B1569C00B19F88 /* PersonForm.swift */,
 				1A71956429B1607500B19F88 /* PlaceForm.swift */,
+				1A83CD3729B7B87100FA7FAD /* ContactPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				1A71955929B1518A00B19F88 /* Log.swift in Sources */,
 				1A83CD0F29B4E28B00FA7FAD /* ErrorViewModel.swift in Sources */,
 				1A83CD1829B6481600FA7FAD /* NumbersOnlyViewModifier.swift in Sources */,
+				1A83CD3829B7B87100FA7FAD /* ContactPicker.swift in Sources */,
 				1A71957C29B2CCF500B19F88 /* Utilities.swift in Sources */,
 				1A71955529B1512C00B19F88 /* StringExtension.swift in Sources */,
 				1A71957829B28BC100B19F88 /* Model.xcdatamodeld in Sources */,

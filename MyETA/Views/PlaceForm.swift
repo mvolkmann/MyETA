@@ -66,13 +66,13 @@ struct PlaceForm: View {
     private var fieldsView: some View {
         Group {
             labeledTextField(
-                label: "Name",
+                label: "Name *",
                 text: $name,
                 focusedPath: \Self.name,
                 identifier: "name-text-field"
             )
             labeledTextField(
-                label: "Street",
+                label: "Street *",
                 text: $street,
                 focusedPath: \Self.street,
                 identifier: "street-text-field"
@@ -96,7 +96,7 @@ struct PlaceForm: View {
                 identifier: "country-text-field"
             )
             labeledTextField(
-                label: "Postal Code",
+                label: "Postal Code *",
                 text: $postalCode,
                 focusedPath: \Self.postalCode,
                 identifier: "postal-code-text-field"
@@ -161,11 +161,7 @@ struct PlaceForm: View {
     }
 
     private var validPlace: Bool {
-        !name.isEmpty &&
-            !street.isEmpty &&
-            !city.isEmpty &&
-            !state.isEmpty &&
-            postalCode.count >= 5
+        !name.isEmpty && !street.isEmpty && postalCode.count >= 5
     }
 
     var body: some View {

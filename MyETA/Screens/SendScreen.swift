@@ -80,7 +80,7 @@ struct SendScreen: View {
 
         guard let from = locationVM.location else {
             errorVM.alert(
-                message: "Failed to curent location."
+                message: "Failed to get curent location."
             )
             return
         }

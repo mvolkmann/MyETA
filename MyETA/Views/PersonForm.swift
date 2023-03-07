@@ -1,3 +1,4 @@
+import ContactsUI
 import SwiftUI
 
 struct PersonForm: View {
@@ -9,6 +10,7 @@ struct PersonForm: View {
     @FocusState private var focus: AnyKeyPath?
 
     @State private var cellNumber = ""
+    @State private var contact: CNContact?
     @State private var firstName = ""
     @State private var index: Int?
     @State private var lastName = ""
@@ -47,7 +49,7 @@ struct PersonForm: View {
     private var fieldsView: some View {
         Group {
             labeledTextField(
-                label: "First Name",
+                label: "First Name *",
                 text: $firstName,
                 focusedPath: \Self.firstName,
                 identifier: "first-name-text-field"
@@ -59,7 +61,7 @@ struct PersonForm: View {
                 identifier: "last-name-text-field"
             )
             labeledTextField(
-                label: "Cell Number",
+                label: "Cell Number *",
                 text: $cellNumber,
                 focusedPath: \Self.cellNumber,
                 identifier: "cell-number-text-field"
@@ -105,8 +107,7 @@ struct PersonForm: View {
     }
 
     private var valid: Bool {
-        // !firstName.isEmpty && !lastName.isEmpty && cellNumber.count >= 10
-        !firstName.isEmpty && !lastName.isEmpty && !cellNumber.isEmpty
+        !firstName.isEmpty && cellNumber.count >= 10
     }
 
     var body: some View {
@@ -119,6 +120,24 @@ struct PersonForm: View {
 
                 VStack {
                     fieldsView
+
+                    ContactPicker(contact: $contact) {
+                        Label(
+                            "Select Contact",
+                            systemImage: "person.crop.circle.fill"
+                        )
+                        .fixedSize()
+                    }
+                    if let contact {
+                        let fullName =
+                            "\(contact.givenName) \(contact.familyName)"
+                        let firstPhone = contact.phoneNumbers.first
+                        let phone = firstPhone?.value.stringValue ?? "unknown"
+                        Text(
+                            "You selected \(fullName) \(phone)."
+                        )
+                    }
+
                     buttonsView
                     Spacer()
                 }
