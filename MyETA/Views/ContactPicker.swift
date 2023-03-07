@@ -3,11 +3,10 @@ import SwiftUI
 
 struct ContactPicker: UIViewControllerRepresentable {
     class Coordinator: NSObject, CNContactPickerDelegate {
+        @Binding private var contact: CNContact?
         private var onCancel: () -> Void
         private var picker = CNContactPickerViewController()
         private var viewController: UIViewController = .init()
-
-        @Binding private var contact: CNContact?
 
         init(
             contact: Binding<CNContact?>,
@@ -41,14 +40,6 @@ struct ContactPicker: UIViewControllerRepresentable {
             picker.delegate = self
         }
 
-        func showContactPicker() {
-            viewController.present(picker, animated: true)
-        }
-
-        func contactPickerDidCancel(_: CNContactPickerViewController) {
-            onCancel()
-        }
-
         func contactPicker(
             _ picker: CNContactPickerViewController,
             didSelect contact: CNContact
@@ -56,8 +47,16 @@ struct ContactPicker: UIViewControllerRepresentable {
             self.contact = contact
         }
 
+        func contactPickerDidCancel(_: CNContactPickerViewController) {
+            onCancel()
+        }
+
         func makeUIViewController() -> UIViewController {
             return viewController
+        }
+
+        func showContactPicker() {
+            viewController.present(picker, animated: true)
         }
 
         func updateUIViewController(
@@ -66,9 +65,8 @@ struct ContactPicker: UIViewControllerRepresentable {
         ) {}
     }
 
-    @Binding var contact: CNContact?
-
-    var onCancel: () -> Void
+    @Binding private var contact: CNContact?
+    private var onCancel: () -> Void
 
     init(
         contact: Binding<CNContact?>,
