@@ -1,3 +1,4 @@
+import Contacts
 import MapKit
 import SwiftUI
 
@@ -10,8 +11,10 @@ struct PlaceForm: View {
     @FocusState private var focus: AnyKeyPath?
 
     @State private var city = ""
+    @State private var contact: CNContact?
     @State private var country = ""
     @State private var index: Int?
+    @State private var isFindingContact = false
     @State private var name = ""
     @State private var placemark: CLPlacemark?
     @State private var postalCode = ""
@@ -174,10 +177,18 @@ struct PlaceForm: View {
 
                 VStack {
                     fieldsView
+
+                    Button("Find in Contacts") {
+                        isFindingContact = true
+                    }
+                    .buttonStyle(.borderedProminent)
+
                     buttonsView
+
                     if validAddress && region.center.latitude != 0 {
                         mapView
                     }
+
                     Spacer()
                 }
                 .padding()
@@ -210,6 +221,34 @@ struct PlaceForm: View {
                     }
                 }
             }
+        }
+        .onChange(of: contact) { _ in
+            guard let contact else { return }
+            print("contact =", contact)
+            guard let postalAddress = contact.postalAddresses.first
+            else { return }
+
+            if contact.givenName.isEmpty {
+                name = contact.organizationName
+            } else {
+                name = "\(contact.givenName) \(contact.familyName)"
+            }
+
+            let address = postalAddress.value
+            street = address.street
+            city = address.city
+            state = address.state
+            country = address.country
+            postalCode = address.postalCode
+
+            focus = \Self.name
+
+            // TODO: Why are taps on the Add button ignored after this
+            // TODO: unless you tap it many times or
+            // TODO: move focus to another TextField before tapping it?
+        }
+        .sheet(isPresented: $isFindingContact) {
+            ContactPicker(contact: $contact)
         }
     }
 }
