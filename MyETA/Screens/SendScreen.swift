@@ -195,7 +195,7 @@ struct SendScreen: View {
 
                     let composeVC = MFMessageComposeViewController()
                     composeVC.messageComposeDelegate = messageComposeDelegate
-                    composeVC.recipients = [mobileumber]
+                    composeVC.recipients = [mobileNumber]
                     composeVC.body = message
                     vc.present(composeVC, animated: true)
                     processing = false
