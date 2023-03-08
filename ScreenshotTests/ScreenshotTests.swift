@@ -32,7 +32,7 @@ final class ScreenshotTests: XCTestCase {
         try textExists("First Name", wait: waitSeconds)
         enterText(label: "first-name-text-field", text: firstName)
         enterText(label: "last-name-text-field", text: lastName)
-        enterText(label: "cell-number-text-field", text: "1234567890")
+        enterText(label: "mobile-number-text-field", text: "1234567890")
 
         snapshot("3-person-sheet")
 

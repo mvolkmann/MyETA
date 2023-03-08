@@ -177,9 +177,9 @@ struct SendScreen: View {
             return
         }
 
-        guard let cellNumber = selectedPerson?.cellNumber else {
+        guard let mobileNumber = selectedPerson?.mobileNumber else {
             errorVM.alert(
-                message: "The selected person has no cell number."
+                message: "The selected person has no mobile number."
             )
             return
         }
@@ -195,7 +195,7 @@ struct SendScreen: View {
 
                     let composeVC = MFMessageComposeViewController()
                     composeVC.messageComposeDelegate = messageComposeDelegate
-                    composeVC.recipients = [cellNumber]
+                    composeVC.recipients = [mobileumber]
                     composeVC.body = message
                     vc.present(composeVC, animated: true)
                     processing = false

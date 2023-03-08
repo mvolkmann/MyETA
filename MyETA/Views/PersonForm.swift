@@ -9,7 +9,7 @@ struct PersonForm: View {
 
     @FocusState private var focus: AnyKeyPath?
 
-    @State private var cellNumber = ""
+    @State private var mobileNumber = ""
     @State private var contact: CNContact?
     @State private var firstName = ""
     @State private var index: Int?
@@ -32,7 +32,7 @@ struct PersonForm: View {
                 if let person {
                     person.firstName = firstName
                     person.lastName = lastName
-                    person.cellNumber = cellNumber
+                    person.mobileNumber = mobileNumber
                     person.id = UUID()
                     save()
                 }
@@ -65,7 +65,7 @@ struct PersonForm: View {
         if phone == nil { phone = contact.phoneNumbers.first }
 
         // Get the phone number from this object.
-        if let phone { cellNumber = phone.value.stringValue }
+        if let phone { mobileNumber = phone.value.stringValue }
 
         // TODO: Why are taps on the Add button ignored after this unless you
         // TODO: move focus to another TextField before tapping it?
@@ -86,12 +86,12 @@ struct PersonForm: View {
                 identifier: "last-name-text-field"
             )
             labeledTextField(
-                label: "Cell Number *",
-                text: $cellNumber,
-                focusedPath: \Self.cellNumber,
-                identifier: "cell-number-text-field"
+                label: "Mobile Number *",
+                text: $mobileNumber,
+                focusedPath: \Self.mobileNumber,
+                identifier: "mobile-number-text-field"
             )
-            .numbersOnly($cellNumber)
+            .numbersOnly($mobileNumber)
         }
         .textFieldStyle(.roundedBorder)
     }
@@ -114,8 +114,8 @@ struct PersonForm: View {
     private func nextFocus() {
         switch focus {
         case \Self.firstName: focus = \Self.lastName
-        case \Self.lastName: focus = \Self.cellNumber
-        case \Self.cellNumber: focus = \Self.firstName
+        case \Self.lastName: focus = \Self.mobileNumber
+        case \Self.mobileNumber: focus = \Self.firstName
         default: break
         }
     }
@@ -132,7 +132,7 @@ struct PersonForm: View {
     }
 
     private var valid: Bool {
-        !firstName.isEmpty && cellNumber.count >= 10
+        !firstName.isEmpty && mobileNumber.count >= 10
     }
 
     var body: some View {
@@ -160,7 +160,7 @@ struct PersonForm: View {
                 .onAppear {
                     firstName = person?.firstName ?? ""
                     lastName = person?.lastName ?? ""
-                    cellNumber = person?.cellNumber ?? ""
+                    mobileNumber = person?.mobileNumber ?? ""
                     focus = \Self.firstName // initial focus
                 }
                 .toolbar {

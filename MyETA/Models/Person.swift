@@ -3,7 +3,7 @@ import Foundation
 struct Person: Hashable, Identifiable {
     var firstName: String
     var lastName: String
-    var cellNumber: String
+    var mobileNumber: String
 
     let id = UUID()
 }
