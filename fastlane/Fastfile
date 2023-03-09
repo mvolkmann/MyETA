@@ -20,7 +20,12 @@ platform :ios do
   lane :tests do
     run_tests(
       scheme: "ScreenshotTest",
-      devices: ['iPhone 13 Pro Max']
+      devices: [
+        "iPhone 8 Plus",
+        "iPhone 13 Pro Max",
+        "iPad Pro (12.9-inch) (2nd generation)"
+        # "iPad Pro (12.9-inch) (6th generation)" # Doesn't work!
+      ]
     )
   end
 

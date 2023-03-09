@@ -28,7 +28,6 @@ final class ScreenshotTest: XCTestCase {
         }
 
         tapButton(label: "add-person-button")
-        // try textExists("First Name", wait: waitSeconds)
         enterText(label: "first-name-text-field", text: firstName)
         enterText(label: "last-name-text-field", text: lastName)
         enterText(label: "mobile-number-text-field", text: "1234567890")
