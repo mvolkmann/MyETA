@@ -19,14 +19,14 @@ platform :ios do
   desc "Run tests"
   lane :tests do
     run_tests(
-      scheme: "ScreenshotTests",
+      scheme: "ScreenshotTest",
       devices: ['iPhone 13 Pro Max']
     )
   end
 
   desc "Generates localized screenshots"
   lane :screenshots do
-    capture_screenshots(scheme: "ScreenshotTests")
+    capture_screenshots(scheme: "ScreenshotTest")
   end
 
   lane :upload_screenshots do

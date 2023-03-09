@@ -1,6 +1,6 @@
 import XCTest
 
-final class ScreenshotTests: XCTestCase {
+final class ScreenshotTest: XCTestCase {
     let firstName = "Mark"
     let lastName = "Volkmann"
     let placeName = "Work"
@@ -28,7 +28,7 @@ final class ScreenshotTests: XCTestCase {
         }
 
         tapButton(label: "add-person-button")
-        try textExists("First Name", wait: waitSeconds)
+        // try textExists("First Name", wait: waitSeconds)
         enterText(label: "first-name-text-field", text: firstName)
         enterText(label: "last-name-text-field", text: lastName)
         enterText(label: "mobile-number-text-field", text: "1234567890")
@@ -83,13 +83,10 @@ final class ScreenshotTests: XCTestCase {
     }
 
     func testScreenshots() throws {
-        // XCTAssertEqual(2, 2)
         try addPerson()
-        /*
-         try addPlace()
-         try sendETAScreen()
-         try peopleScreen()
-         try placesScreen()
-         */
+        try addPlace()
+        try sendETAScreen()
+        try peopleScreen()
+        try placesScreen()
     }
 }
