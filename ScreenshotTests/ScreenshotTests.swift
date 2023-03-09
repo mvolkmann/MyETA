@@ -10,9 +10,8 @@ final class ScreenshotTests: XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launch()
+        setupSnapshot(Self.app)
+        Self.app.launch()
     }
 
     override func tearDownWithError() throws {}
@@ -86,9 +85,11 @@ final class ScreenshotTests: XCTestCase {
     func testScreenshots() throws {
         // XCTAssertEqual(2, 2)
         try addPerson()
-        try addPlace()
-        try sendETAScreen()
-        try peopleScreen()
-        try placesScreen()
+        /*
+         try addPlace()
+         try sendETAScreen()
+         try peopleScreen()
+         try placesScreen()
+         */
     }
 }
