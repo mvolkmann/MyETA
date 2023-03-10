@@ -96,10 +96,15 @@ struct SendScreen: View {
         guard let person = selectedPerson else {
             throw "A person must be selected."
         }
+        guard let place = selectedPlace else {
+            throw "A person must be selected."
+        }
         let firstName = person.firstName ?? "unknown"
         try await getETA()
         let time = eta?.time ?? "unknown"
-        let name = selectedPlace?.name ?? ""
+        let name = person.id == place.personID ?
+            "your house" :
+            place.name ?? ""
         return "\(firstName), I will arrive at \(name) around \(time)."
     }
 

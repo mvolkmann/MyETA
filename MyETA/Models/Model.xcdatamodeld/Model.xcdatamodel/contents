@@ -11,6 +11,7 @@
         <attribute name="country" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="personID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="postalCode" attributeType="String" minValueString="5"/>
         <attribute name="state" optional="YES" attributeType="String"/>
         <attribute name="street" attributeType="String"/>

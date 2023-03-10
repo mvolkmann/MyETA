@@ -22,6 +22,8 @@ struct AddContact: View {
             return label.contains("Mobile")
         }
 
+        var personID: UUID?
+
         // We only add a PersonEntity for contacts that have a mobile phone.
         // Presumably businesses do not have mobile phones,
         // and we do not want to add a PersonEntity for businesses.
@@ -31,7 +33,8 @@ struct AddContact: View {
             person.firstName = contact.givenName
             person.lastName = contact.familyName
             person.mobileNumber = phone.value.stringValue
-            person.id = UUID()
+            personID = UUID()
+            person.id = personID
 
             let fullName = "\(contact.givenName) \(contact.familyName)"
             message = "Added person \"\(fullName)\""
@@ -52,6 +55,7 @@ struct AddContact: View {
             place.country = address.country.isEmpty ? "USA" : address.country
             place.postalCode = address.postalCode
             place.id = UUID()
+            if let personID { place.personID = personID }
 
             if message.isEmpty {
                 message = "Added place \"\(name)\""
