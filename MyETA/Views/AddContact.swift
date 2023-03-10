@@ -31,6 +31,7 @@ struct AddContact: View {
             person.firstName = contact.givenName
             person.lastName = contact.familyName
             person.mobileNumber = phone.value.stringValue
+            person.id = UUID()
 
             let fullName = "\(contact.givenName) \(contact.familyName)"
             message = "Added person \"\(fullName)\""
