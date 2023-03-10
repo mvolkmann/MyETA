@@ -84,9 +84,6 @@ struct PlaceForm: View {
         state = address.state
         country = address.country
         postalCode = address.postalCode
-
-        // TODO: Why are taps on the Add button ignored after this unless you
-        // TODO: move focus to another TextField before tapping it?
     }
 
     private var fieldsView: some View {

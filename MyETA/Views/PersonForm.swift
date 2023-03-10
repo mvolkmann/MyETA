@@ -1,4 +1,3 @@
-import Contacts
 import SwiftUI
 
 struct PersonForm: View {
@@ -10,10 +9,8 @@ struct PersonForm: View {
     @FocusState private var focus: AnyKeyPath?
 
     @State private var mobileNumber = ""
-    @State private var contact: CNContact?
     @State private var firstName = ""
     @State private var index: Int?
-    @State private var isFindingContact = false
     @State private var lastName = ""
 
     @Binding var person: PersonEntity?
@@ -25,7 +22,6 @@ struct PersonForm: View {
             let adding = person == nil
             let word = adding ? "Add" : "Update"
             Button("\(word) Person") {
-                print("got button tap; adding =", adding)
                 if adding {
                     person = PersonEntity(context: moc)
                 }
@@ -39,7 +35,6 @@ struct PersonForm: View {
                 dismiss()
             }
             .buttonStyle(.borderedProminent)
-            // TODO: Why isn't this being evaluated immediately after selecting a contact with ContactPicker?
             .disabled(!valid)
             .accessibilityIdentifier("add-button")
 
@@ -47,28 +42,6 @@ struct PersonForm: View {
                 .buttonStyle(.bordered)
                 .accessibilityIdentifier("cancel-button")
         }
-    }
-
-    private func changeContact(_ contact: CNContact?) {
-        guard let contact else { return }
-
-        firstName = contact.givenName
-        lastName = contact.familyName
-
-        // Find the first "Mobile" phone number.
-        var phone = contact.phoneNumbers.first { phoneNumber in
-            guard let label = phoneNumber.label else { return false }
-            return label.contains("Mobile")
-        }
-
-        // If none was found, just use the first phone number.
-        if phone == nil { phone = contact.phoneNumbers.first }
-
-        // Get the phone number from this object.
-        if let phone { mobileNumber = phone.value.stringValue }
-
-        // TODO: Why are taps on the Add button ignored after this unless you
-        // TODO: move focus to another TextField before tapping it?
     }
 
     private var fieldsView: some View {
@@ -146,11 +119,6 @@ struct PersonForm: View {
                 VStack {
                     fieldsView
 
-                    Button("Find in Contacts") {
-                        isFindingContact = true
-                    }
-                    .buttonStyle(.bordered)
-
                     buttonsView
 
                     Spacer()
@@ -171,10 +139,6 @@ struct PersonForm: View {
                     }
                 }
             }
-        }
-        .onChange(of: contact, perform: changeContact)
-        .sheet(isPresented: $isFindingContact) {
-            ContactPicker(contact: $contact)
         }
     }
 }
