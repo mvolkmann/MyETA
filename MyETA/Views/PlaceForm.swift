@@ -1,4 +1,3 @@
-import Contacts
 import MapKit
 import SwiftUI
 
@@ -11,7 +10,6 @@ struct PlaceForm: View {
     @FocusState private var focus: AnyKeyPath?
 
     @State private var city = ""
-    @State private var contact: CNContact?
     @State private var country = ""
     @State private var index: Int?
     @State private var isFindingContact = false
@@ -64,26 +62,6 @@ struct PlaceForm: View {
                 .buttonStyle(.bordered)
                 .accessibilityIdentifier("cancel-button")
         }
-    }
-
-    private func changeContact(_ contact: CNContact?) {
-        guard let contact else { return }
-
-        guard let postalAddress = contact.postalAddresses.first
-        else { return }
-
-        if contact.givenName.isEmpty {
-            name = contact.organizationName
-        } else {
-            name = "\(contact.givenName) \(contact.familyName)"
-        }
-
-        let address = postalAddress.value
-        street = address.street
-        city = address.city
-        state = address.state
-        country = address.country
-        postalCode = address.postalCode
     }
 
     private var fieldsView: some View {
@@ -174,7 +152,7 @@ struct PlaceForm: View {
         } catch {
             errorVM.alert(
                 error: error,
-                message: "Failed to save place to Core Data."
+                message: "Failed to save place in Core Data."
             )
         }
     }
@@ -241,10 +219,6 @@ struct PlaceForm: View {
                     }
                 }
             }
-        }
-        .onChange(of: contact, perform: changeContact)
-        .sheet(isPresented: $isFindingContact) {
-            ContactPicker(contact: $contact)
         }
     }
 }

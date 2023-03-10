@@ -99,7 +99,7 @@ struct PersonForm: View {
         } catch {
             errorVM.alert(
                 error: error,
-                message: "Failed to save person to Core Data."
+                message: "Failed to save person in Core Data."
             )
         }
     }

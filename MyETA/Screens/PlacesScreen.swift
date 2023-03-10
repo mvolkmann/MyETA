@@ -44,7 +44,7 @@ struct PlacesScreen: View {
         } catch {
             errorVM.alert(
                 error: error,
-                message: "Failed to save places change to Core Data."
+                message: "Failed to save places change in Core Data."
             )
         }
     }
@@ -55,20 +55,7 @@ struct PlacesScreen: View {
             Rectangle().fill(fill).ignoresSafeArea()
 
             VStack {
-                /*
-                 HStack {
-                     Text("Places").font(.largeTitle)
-                     Button(action: {
-                         place = nil
-                         isShowingForm = true
-                     }) {
-                         Image(systemName: "plus.circle.fill")
-                             .resizable()
-                             .scaledToFit()
-                             .frame(width: 25)
-                     }
-                 }
-                 */
+                AddContact()
 
                 if !places.isEmpty {
                     // editActions doesn't work with CoreData models.
@@ -79,6 +66,7 @@ struct PlacesScreen: View {
                         }
                         .onDelete(perform: deletePlace)
                     }
+                    .listStyle(.plain)
                     .scrollContentBackground(.hidden) // hides default background
                 }
 
