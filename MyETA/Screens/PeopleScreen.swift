@@ -12,12 +12,24 @@ struct PeopleScreen: View {
         ]
     ) var people: FetchedResults<PersonEntity>
 
-    @State private var isActive = false
     @State private var isFindingContact = false
     @State private var isShowingForm = false
     @State private var isShowingMessage = false
     @State private var person: PersonEntity?
     @State private var message = ""
+
+    private var buttons: some View {
+        HStack {
+            AddContact()
+
+            Button("Add Manually") {
+                person = nil
+                isShowingForm = true
+            }
+            .buttonStyle(.bordered)
+            .accessibilityIdentifier("add-person-button")
+        }
+    }
 
     private func deletePerson(at indexSet: IndexSet) {
         for index in indexSet {
@@ -53,7 +65,7 @@ struct PeopleScreen: View {
             Rectangle().fill(fill).ignoresSafeArea()
 
             VStack {
-                AddContact()
+                buttons
 
                 if !people.isEmpty {
                     // editActions doesn't work with CoreData models.
@@ -78,25 +90,10 @@ struct PeopleScreen: View {
             actions: {},
             message: { Text(message) }
         )
-        .onAppear { isActive = true }
-        .onDisappear { isActive = false }
         .sheet(isPresented: $isShowingForm) {
             PersonForm(person: $person)
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
-        }
-        .toolbar {
-            if isActive {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        person = nil
-                        isShowingForm = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                    }
-                    .accessibilityIdentifier("add-person-button")
-                }
-            }
         }
     }
 }

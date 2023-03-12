@@ -19,9 +19,21 @@ struct PlacesScreen: View {
         ]
     ) var places: FetchedResults<PlaceEntity>
 
-    @State private var isActive = false
     @State private var isShowingForm = false
     @State private var place: PlaceEntity?
+
+    private var buttons: some View {
+        HStack {
+            AddContact()
+
+            Button("Add Manually") {
+                place = nil
+                isShowingForm = true
+            }
+            .buttonStyle(.bordered)
+            .accessibilityIdentifier("add-place-button")
+        }
+    }
 
     private func deletePlace(at indexSet: IndexSet) {
         for index in indexSet {
@@ -55,7 +67,7 @@ struct PlacesScreen: View {
             Rectangle().fill(fill).ignoresSafeArea()
 
             VStack {
-                AddContact()
+                buttons
 
                 if !places.isEmpty {
                     // editActions doesn't work with CoreData models.
@@ -74,25 +86,10 @@ struct PlacesScreen: View {
             }
             .padding()
         }
-        .onAppear { isActive = true }
-        .onDisappear { isActive = false }
         .sheet(isPresented: $isShowingForm) {
             PlaceForm(place: $place)
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
-        }
-        .toolbar {
-            if isActive {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        place = nil
-                        isShowingForm = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                    }
-                    .accessibilityIdentifier("add-place-button")
-                }
-            }
         }
     }
 }
