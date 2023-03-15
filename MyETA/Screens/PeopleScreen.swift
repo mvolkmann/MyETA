@@ -7,8 +7,16 @@ struct PeopleScreen: View {
 
     @FetchRequest(
         sortDescriptors: [
-            NSSortDescriptor(key: "lastName", ascending: true),
-            NSSortDescriptor(key: "firstName", ascending: true)
+            NSSortDescriptor(
+                key: "lastName",
+                ascending: true,
+                selector: #selector(NSString.localizedStandardCompare)
+            ),
+            NSSortDescriptor(
+                key: "firstName",
+                ascending: true,
+                selector: #selector(NSString.localizedStandardCompare)
+            )
         ]
     ) var people: FetchedResults<PersonEntity>
 

@@ -15,7 +15,11 @@ struct PlacesScreen: View {
 
     @FetchRequest(
         sortDescriptors: [
-            NSSortDescriptor(key: "name", ascending: true)
+            NSSortDescriptor(
+                key: "name",
+                ascending: true,
+                selector: #selector(NSString.localizedStandardCompare)
+            )
         ]
     ) var places: FetchedResults<PlaceEntity>
 
